@@ -8,7 +8,7 @@
       <th>Email</th>
       <th>Address</th>
     </tr>
-    <tr v-for="(user, index) in userDetails">
+    <tr v-for="(user, index) in userDetails" >
       <td>{{ index + 1 }}</td>
       <td>{{ user.name }}</td>
       <td>{{ user.age }}</td>

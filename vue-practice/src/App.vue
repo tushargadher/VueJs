@@ -1,7 +1,7 @@
 <template>
   <NavBar />
   <!-- to display route components -->
-  <router-view></router-view>
+  <router-view />
   <!-- <Home />
   <Watcher /> -->
 </template>

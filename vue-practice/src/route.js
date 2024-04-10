@@ -3,7 +3,7 @@ import Home from "./components/Home.vue";
 import Watcher from "./components/Watcher.vue";
 import User from "./components/user.vue";
 import UserDetail from "./components/userDetails.vue";
-import Tushar from "./components/Binding.vue";
+import Binding from "./components/Binding.vue";
 
 //array of routes
 const routes = [
@@ -26,12 +26,12 @@ const routes = [
   },
   {
     path: "/binding",
-    component: Tushar,
+    component: Binding,
   },
 ];
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createMemoryHistory("http://localhost:5173/"),
   routes,
 });
 
