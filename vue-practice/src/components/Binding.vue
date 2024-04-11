@@ -13,11 +13,29 @@
       <a v-bind:href="NuxtUrl">learn Nuxt js</a>
     </div>
 
-    <h4>HTML Binding</h4>
+    <h4 v-bind:class="isAvailable ? 'green' : 'denger'">HTML Binding</h4>
 
     <span v-html="tag"></span>
 
+    <b
+      v-bind:style="{
+        color: FontColor,
+        // 'font-size': fontSize + 'px',
+        fontSize: fontSize + 'px',
+        padding: '20px',
+      }"
+      >Inline Style</b
+    >
+    <b v-bind:style="styleObject">Inline Style With Object</b>
+
     <button v-on:click="applyStyle = !applyStyle">Change Style</button>
+
+    <!-- template tag dose not redner itself in dom -->
+    <template v-if="show">
+      <h3>Hello</h3>
+      <h3>From</h3>
+      <h3>Vue</h3>
+    </template>
   </div>
 </template>
 <script>
@@ -33,6 +51,10 @@ export default {
       applyStyle: false,
       tag: "<h1>this is html code</h1><p>This is paragraph</p>",
       spanMessgae: "this is span message",
+      isAvailable: true,
+      FontColor: "orange",
+      fontSize: 50,
+      show: true,
     };
   },
 
@@ -41,6 +63,13 @@ export default {
       return {
         styledContainer: this.applyStyle,
         fontColor: this.applyStyle,
+      };
+    },
+    styleObject() {
+      return {
+        color: this.FontColor,
+        fontSize: this.fontSize + "px",
+        padding: "20px",
       };
     },
   },
@@ -65,5 +94,11 @@ export default {
 }
 img {
   height: 10vh;
+}
+.denger {
+  background-color: red;
+}
+.green {
+  background-color: green;
 }
 </style>
