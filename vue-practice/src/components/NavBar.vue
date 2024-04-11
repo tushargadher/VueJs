@@ -13,6 +13,9 @@
       <li>
         <router-link to="/binding">Binding</router-link>
       </li>
+      <li>
+        <router-link to="/jobform">Modifiers</router-link>
+      </li>
     </ul>
   </nav>
 </template>

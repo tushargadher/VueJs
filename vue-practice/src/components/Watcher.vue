@@ -4,6 +4,10 @@
     <h4>Watcher Example</h4>
     <h5>Volumn Tracker(0-20)</h5>
     <p>Cuurent Volumn : {{ Volumn }}</p>
+
+    <!-- in vue js when we pass multiple function in onclick event , the event object will not pass automatilcy we need to pass manually in function call like
+    <button @click="increaseVolumn($event),descreaseVolumna(3,$event)";
+    -->
     <button v-on:click="increaseVolumn">+</button>
     <button v-on:click="descreaseVolumn">-</button>
     <div>

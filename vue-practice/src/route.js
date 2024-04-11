@@ -4,6 +4,7 @@ import Watcher from "./components/Watcher.vue";
 import User from "./components/user.vue";
 import UserDetail from "./components/userDetails.vue";
 import Binding from "./components/Binding.vue";
+import Modifier from "./components/Modifier.vue";
 
 //array of routes
 const routes = [
@@ -23,6 +24,10 @@ const routes = [
   {
     path: "/user/:id",
     component: UserDetail,
+  },
+  {
+    path: "/jobform",
+    component: Modifier,
   },
   {
     path: "/binding",

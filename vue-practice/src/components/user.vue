@@ -38,6 +38,8 @@
       </td>
     </tr>
   </table>
+  {{ console.log(typeof (10 + "1")) }}
+  {{ add() }}
 </template>
 <style scoped>
 table {
@@ -93,6 +95,12 @@ export default {
         },
       ],
     };
+  },
+  //in vue js we can't use arrow fuction in methods because , in arrow fuction this keyword is undefine,so we use normal funtion
+  methods: {
+    add() {
+      return 10 + 12;
+    },
   },
 };
 </script>

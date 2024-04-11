@@ -6,6 +6,9 @@
     <img v-bind:src="nuxtlogo" alt="nuxtlogo" />
     <h1>Binding in Nuxt js</h1>
     <h4>{{ message }}</h4>
+    <!-- v-model.lazy update the associated data property only after certain events like change or blur occur on the input element, 
+      rather than immediately on every input even -->
+    <!-- <input type="text" v-model.lazy="inputValue" /> -->
     <input type="text" v-model="inputValue" />
 
     <p>{{ inputValue }}</p>
