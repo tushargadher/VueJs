@@ -20,7 +20,15 @@
   <b v-for="(name, index) in names" :key="index" style="display: block">
     {{ index + 1 }} {{ name }}
   </b>
-
+  <userDetails
+    userName="Tushar"
+    lastName="Gadher"
+    :isFriend="true"
+    :number="1"
+  />
+  <!--vue treat number as number we have to bind it -->
+  <userDetails userName="Tushar" lastName="Gadher" :isFriend="false" />
+  <userDetails :userName="username" lastName="Gadher" :isFriend="true" />
   <h1>Actor Details</h1>
   <table border="1">
     <tr>
@@ -52,10 +60,15 @@ th {
 }
 </style>
 <script>
+import userDetails from "./userDetails.vue";
 export default {
   name: "User",
+  components: {
+    userDetails,
+  },
   data() {
     return {
+      username: "Tushar",
       userDetails: [
         {
           name: "John Doe",
