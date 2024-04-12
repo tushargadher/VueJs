@@ -11,6 +11,16 @@ time it has been used then it stores it's results for next.  -->
 
     <h4>{{ compCalcDiscount }}</h4>
     <h4>{{ compCalcDiscount }}</h4>
+
+    <input
+      type="text"
+      placeholder="enter some data and see console"
+      v-model="inputText"
+    />
+
+    <button v-on:click="changeFullName">change FullName</button>
+
+    <!-- when  we enter the value in input v-model chage the value of inputText and page render and normal method execute every time , but computed propertly get the value from cached and computed property call only when the dependaccy chanegs -->
   </div>
 
   <!-- when we call it second time it get value from cache and does not executed
@@ -27,6 +37,7 @@ export default {
       lastName: "Gadher",
       fees: 100,
       discount: 25,
+      inputText: "",
     };
   },
   methods: {
@@ -36,6 +47,10 @@ export default {
       }
       console.log("calc executed Normal!");
       return this.fees - (this.fees * this.discount) / 100;
+    },
+    changeFullName() {
+      //computed property is by default is readonly
+      this.fullname = "Jack Neo";
     },
   },
   computed: {
@@ -47,8 +62,18 @@ export default {
       return this.fees - (this.fees * this.discount) / 100;
     },
 
-    fullname() {
-      return this.firstName + this.lastName;
+    fullname: {
+      //get method to get the value of computed property
+      get() {
+        return this.firstName + " " + this.lastName;
+      },
+
+      //set method to change value of computed property,set method get argument of new value
+      set(fullname) {
+        const name = fullname.split(" ");
+        this.firstName = name[0];
+        this.lastName = name[1];
+      },
     },
   },
 };
