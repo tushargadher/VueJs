@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <MyForm />
     <p>this is parent component {{ myname }}</p>
     <button @click="handlePopUp">Open popup</button>
     <p>{{ message }}</p>
@@ -10,10 +11,13 @@
 
 <script>
 import ChildComponent from "./ChildComponent.vue";
+import MyForm from "./MyForm.vue";
+
 export default {
   name: "ParentComponent",
   components: {
     ChildComponent,
+    MyForm,
   },
   data() {
     return {

@@ -1,17 +1,24 @@
 <template>
   <ParentComponent />
-  <ChildComponent />
+  <!-- our custom input tag does not bind app componet data name  -->
+  <!-- this v-model value is pass to child compomonent as modelValue props automacaltity -->
+  <InputTag v-model="name" />
+  <InputTag v-model="place" />
 </template>
 
 <script>
+import InputTag from "./components/InputTag.vue";
 import ParentComponent from "./components/ParentComponent.vue";
+
 export default {
   name: "App",
   components: {
     ParentComponent,
+    InputTag,
   },
   data() {
     return {
+      place: "home",
       name: "Tushar Gadher",
     };
   },
