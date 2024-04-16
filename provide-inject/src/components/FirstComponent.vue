@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>First Component</h1>
-    <!-- <p>{{ username }}</p> -->
+    <!-- <p>{{ secondMessage }}</p> -->
     <SecondComponent />
   </div>
 </template>
@@ -12,7 +12,9 @@ export default {
   components: {
     SecondComponent,
   },
-  //   inject: ["username"],
+  //   using provide and inject we can send data parent to inner child but not from inner child to parent,
+  // for this we use custome event
+  //   inject: ["secondMessage"],
 };
 </script>
 <style scoped>

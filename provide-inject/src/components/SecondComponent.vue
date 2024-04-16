@@ -11,6 +11,16 @@ export default {
   components: {
     ThirdComponent,
   },
+  data() {
+    return {
+      SecondComponentData: "This message is from second component",
+    };
+  },
+  provide() {
+    return {
+      secondMessage: this.SecondComponentData,
+    };
+  },
 };
 </script>
 <style scoped>
