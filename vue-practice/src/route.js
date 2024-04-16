@@ -5,7 +5,7 @@ import User from "./components/user.vue";
 import UserDetail from "./components/userDetails.vue";
 import Binding from "./components/Binding.vue";
 import Modifier from "./components/Modifier.vue";
-
+import Posts from "./components/Posts.vue";
 //array of routes
 const routes = [
   {
@@ -32,6 +32,10 @@ const routes = [
   {
     path: "/binding",
     component: Binding,
+  },
+  {
+    path: "/post",
+    component: Posts,
   },
 ];
 

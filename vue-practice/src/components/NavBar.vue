@@ -16,6 +16,9 @@
       <li>
         <router-link to="/jobform">Modifiers</router-link>
       </li>
+      <li>
+        <router-link to="/post">Post</router-link>
+      </li>
     </ul>
   </nav>
 </template>
