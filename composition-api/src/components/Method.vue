@@ -2,8 +2,12 @@
   <div class="container">
     <h2>Replacing Method using composition API</h2>
 
+    <input type="text" placeholder="Enter Name" v-model="name" />
+
+    <input type="text" placeholder="Enter Role" v-model="role" />
+
     <h3>{{ name }} {{ role }}</h3>
-    <button @click="handleClick">Change Details</button>
+    <button @click="handleClick">Reset Details</button>
   </div>
 </template>
 
@@ -19,7 +23,8 @@ export default {
     });
 
     function handleClick() {
-      state.role = "VueJs Developer";
+      state.name = "Tushar Gadher";
+      state.role = "Full Stack Developer";
     }
     return {
       //toRefs allow as to bind firstname and lastlast without use of state.
