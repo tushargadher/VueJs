@@ -1,14 +1,17 @@
 <template>
   <HelloWorld id="myComponent"></HelloWorld>
+  <Method></Method>
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
+import Method from "./components/Method.vue";
 
 export default {
   name: "App",
   components: {
     HelloWorld,
+    Method,
   },
 };
 </script>
