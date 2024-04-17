@@ -7,19 +7,24 @@
     <input type="text" placeholder="Enter Role" v-model="role" />
 
     <h3>{{ name }} {{ role }}</h3>
+    <h2>{{ fullSentence }}</h2>
     <button @click="handleClick">Reset Details</button>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import { reactive, toRefs } from "vue";
+import { computed, reactive, toRefs } from "vue";
 export default {
   name: "Method",
   setup() {
     let state = reactive({
       name: "Tushar Gadher",
       role: "Full Stack Developer",
+    });
+    //computed accept function as a agrument and return computed property
+    const fullSentence = computed(function () {
+      return `${state.name} is working as ${state.role}`;
     });
 
     function handleClick() {
@@ -30,6 +35,7 @@ export default {
       //toRefs allow as to bind firstname and lastlast without use of state.
       ...toRefs(state),
       handleClick,
+      fullSentence,
     };
   },
 };

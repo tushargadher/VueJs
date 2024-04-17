@@ -1,17 +1,20 @@
 <template>
   <HelloWorld id="myComponent"></HelloWorld>
   <Method></Method>
+  <Watch></Watch>
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
 import Method from "./components/Method.vue";
+import Watch from "./components/Watch.vue";
 
 export default {
   name: "App",
   components: {
     HelloWorld,
     Method,
+    Watch,
   },
 };
 </script>
