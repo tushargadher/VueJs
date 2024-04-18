@@ -11,6 +11,7 @@
             id="name"
             placeholder="Enter your name"
             v-model="name"
+            ref="inputRef"
           />
         </div>
         <div>
@@ -20,6 +21,7 @@
             id="password"
             placeholder="Enter your password"
             v-model="password"
+            ref="passwordRef"
           />
           <span style="color: red" v-if="passwordError">{{
             passwordError
@@ -80,7 +82,8 @@
         <button type="submit">Submit</button>
       </form>
 
-      <h1 v-text="test"></h1>
+      <!-- <h1 v-text="test"></h1> -->
+      <Ref ref="componentRef" />
       <p>Name : {{ name }}</p>
       <p>Email : {{ email }}</p>
       <p>Role :{{ role }}</p>
@@ -91,8 +94,28 @@
   </div>
 </template>
 <script>
+import Ref from "./Ref.vue";
+import { ref, onMounted } from "vue";
 export default {
   name: "user-form",
+  setup() {
+    let passwordRef = ref(null);
+    onMounted(() => {
+      passwordRef.value.focus();
+    });
+    return {
+      passwordRef,
+    };
+  },
+  components: {
+    Ref,
+  },
+
+  mounted() {
+    console.log(this.$refs.componentRef);
+    // console.log(this.$refs.inputRef);
+    // this.$refs.inputRef.focus();
+  },
   data() {
     return {
       test: "V-text replace entire content of tag",
