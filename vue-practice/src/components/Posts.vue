@@ -10,20 +10,16 @@
 </template>
 
 <script>
+import { ref, onMounted } from "vue";
 import axios from "axios";
 export default {
   name: "Post",
-  mounted() {
-    this.getData();
-  },
-  data() {
-    return {
-      postData: [],
-      errorMessage: "",
-    };
-  },
-  methods: {
-    getData() {
+  setup() {
+    let postData = ref("");
+    onMounted(() => {
+      getData();
+    });
+    function getData() {
       axios
         .get("https://jsonplaceholder.typicode.com/posts")
         .then((res) => {
@@ -34,8 +30,31 @@ export default {
           console.log(err);
           this.errorMessage = err.message;
         });
-    },
+    }
   },
+  // mounted() {
+  //   this.getData();
+  // },
+  // data() {
+  //   return {
+  //     postData: [],
+  //     errorMessage: "",
+  //   };
+  // },
+  // methods: {
+  //   getData() {
+  //     axios
+  //       .get("https://jsonplaceholder.typicode.com/posts")
+  //       .then((res) => {
+  //         console.log(res);
+  //         this.postData = res.data;
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         this.errorMessage = err.message;
+  //       });
+  //   },
+  // },
 };
 </script>
 
