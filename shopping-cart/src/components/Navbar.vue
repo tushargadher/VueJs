@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-dark">
+  <nav class="navbar navbar-expand-lg bg-dark position-fixed w-100 top-0">
     <div class="container">
       <router-link
         :to="{ name: 'Home' }"
@@ -40,8 +40,9 @@
             <i class="bi bi-heart">
               <span
                 class="position-absolute top-4 translate-middle badge rounded-pill bg-danger"
+                v-show="showWishListBagde"
               >
-                {{ getWishListLength() }}
+                {{ getTotalWishlistItem }}
               </span>
             </i>
           </router-link>
@@ -52,8 +53,9 @@
             <i class="bi bi-cart3">
               <span
                 class="position-absolute top-4 translate-middle badge rounded-pill bg-danger"
+                v-show="showCartBagde"
               >
-                {{ getCartLength() }}
+                {{ getTotalCartItem }}
               </span></i
             >
           </router-link>
@@ -65,22 +67,45 @@
 
 <script>
 /* eslint-disable */
+
+import { mapGetters } from "vuex";
 export default {
   name: "Navbar",
-  methods: {
-    getCartLength() {
-      return this.$store.getters.getTotalCartItem;
+  // computed: mapGetters({
+  //   //name: gettername form store
+  //   cartCount: "getTotalCartItem",
+  // }),
+  computed: {
+    // getCartLength() {
+    //   return this.$store.getters.getTotalCartItem;
+    // },
+
+    // getWishListLength() {
+    //   return this.$store.getters.getTotalWishlistItem;
+    // },
+    
+    //if both have same name then we can pass into array
+    ...mapGetters(["getTotalCartItem", "getTotalWishlistItem"]),
+    showCartBagde() {
+      return this.getTotalCartItem > 0;
     },
-    getWishListLength() {
-      return this.$store.getters.getTotalWishlistItem;
+    showWishListBagde() {
+      return this.getTotalWishlistItem > 0;
     },
   },
 };
 </script>
 
 <style scoped>
+.navbar {
+  z-index: 1000;
+}
 a {
   color: inherit;
   text-decoration: none;
+}
+.navbar-toggler {
+  border-color: antiquewhite;
+  background-color: white;
 }
 </style>

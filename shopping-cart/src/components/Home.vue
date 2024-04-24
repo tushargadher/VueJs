@@ -17,8 +17,7 @@ export default {
   methods: {
     getAllProduct() {
       //dispatch action to store
-      console.log("Api calling");
-
+      // console.log("Api calling");
       this.$store.dispatch("getAllProdoct");
     },
   },
@@ -30,4 +29,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.mt-5 {
+  margin-top: 80px !important;
+}
+</style>

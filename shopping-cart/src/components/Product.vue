@@ -44,7 +44,7 @@ export default {
       //dispatch action to store
       this.$store.dispatch("addToCart", this.product);
 
-      console.log(this.$store.state.cart);
+      // console.log(this.$store.state.cart);
     },
     addToWishlist() {
       this.$store.dispatch("addToWishlist", this.product);
