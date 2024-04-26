@@ -2,7 +2,7 @@
   <div class="cart-item card mb-3">
     <div class="row g-0">
       <!-- Product Image -->
-      <div class="col-md-4">
+      <div class="col-md-2">
         <img
           :src="product.images[0] ? product.images[0] : product.images[1]"
           alt=""
@@ -10,7 +10,7 @@
         />
       </div>
       <!-- Product Details -->
-      <div class="col-md-8">
+      <div class="col-md-10">
         <div class="card-body">
           <!-- Product Title -->
           <h5 class="card-title">{{ product?.title }}</h5>
@@ -69,7 +69,10 @@ export default {
     ...mapActions(["removeCartItem", "increseQuantity", "decreseQuantity"]),
 
     handleReomveCartitem() {
-      this.removeCartItem(this.product);
+      let confrom = confirm("Remove Product From Cart?");
+      if (confrom) {
+        this.removeCartItem(this.product);
+      }
     },
     incrementQuantity() {
       this.increseQuantity(this.product);

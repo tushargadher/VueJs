@@ -1,11 +1,17 @@
 <template>
   <div class="container d-flex flex-wrap justify-content-between mt-5">
-    <WishListItem v-for="item in wishlist" :key="item.id" :product="item" />
+    <h1 v-show="!getTotalWishlistItem">Wishlist is Empty</h1>
+    <WishListItem
+      v-for="item in wishlist"
+      :key="item.id"
+      :product="item"
+      v-show="getTotalWishlistItem"
+    />
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import WishListItem from "./WishListItem.vue";
 export default {
   name: "WishList",
@@ -14,6 +20,7 @@ export default {
   },
   computed: {
     ...mapState(["wishlist"]),
+    ...mapGetters(["getTotalWishlistItem"]),
     // wishlistItem() {
     //   return this.$store.state.wishlist;
     // },
