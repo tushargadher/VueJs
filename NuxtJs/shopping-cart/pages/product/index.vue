@@ -1,14 +1,11 @@
 <template>
   <div>
-    <Navbar />
     <h1>Product Page</h1>
   </div>
 </template>
 
 <script>
-export default {
-  name: "IndexPage",
-};
+export default {};
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+    <div class="container-fluid flex flex-row">
+      <NuxtLink to="/">Shopping Cart</NuxtLink>
       <button
         class="navbar-toggler"
         type="button"
@@ -13,7 +13,10 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div
+        class="collapse navbar-collapse border w-25"
+        id="navbarSupportedContent"
+      >
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <NuxtLink to="/Cart">MyCart</NuxtLink>
@@ -31,4 +34,9 @@
 export default {};
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+a {
+  text-decoration: none;
+  color: black;
+}
+</style>

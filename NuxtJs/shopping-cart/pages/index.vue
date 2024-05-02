@@ -1,12 +1,12 @@
 <template>
   <div>
-    <Navbar />
-    <nuxt />
+    <h1>home page Products</h1>
+    <ul></ul>
   </div>
 </template>
 
 <script>
-export default {
-  name: "IndexPage",
-};
+import gql from "graphql-tag";
+
+export default {};
 </script>
