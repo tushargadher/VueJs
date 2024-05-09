@@ -48,3 +48,10 @@ const router = createRouter({
 });
 
 export default router;
+
+
+// step to create routing
+// 1.install package
+// 2.crarte routes file
+// 3. use router in using app.use(router)
+// 4. add router-view in app.vue

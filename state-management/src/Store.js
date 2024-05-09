@@ -47,6 +47,7 @@ export default new Vuex.Store({
       todoItem.completed = true;
     },
   },
+  // commit is a method provided by Vuex store instances to trigger mutations
   actions: {
     //business logic similar to method
 
