@@ -15,12 +15,6 @@
     <v-card-text>
       <p>{{ product.description }}</p>
     </v-card-text>
-    <!-- 
-    <v-card-actions>
-      <v-btn color="orange" text="Share"></v-btn>
-
-      <v-btn color="orange" text="Explore"></v-btn>
-    </v-card-actions> -->
   </v-card>
 </template>
 <script>
@@ -28,13 +22,17 @@ export default {
   props: {
     product: {
       type: Object,
-      require: true,
+      required: true,
     },
   },
   methods: {
     handleNavigate(productId) {
       // Use Nuxt.js router to navigate to a new route
+      // hardcord url
       this.$router.push(`/product/${productId}`);
+
+      //named routes
+      // this.$router.push({ name: "product-details", params: { id: productId } });
     },
   },
 };

@@ -8,6 +8,7 @@
 import productData from "../../static/products";
 
 export default {
+  name: "product",
   data() {
     return {
       products: productData,

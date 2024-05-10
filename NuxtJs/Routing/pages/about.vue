@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "IndexPage",
+  name: "about",
   head() {
     return {
       title: "About",

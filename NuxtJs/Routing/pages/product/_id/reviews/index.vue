@@ -46,6 +46,7 @@
 import products from "../../../../static/products";
 
 export default {
+  name: "product-id",
   data() {
     return {
       reviews: [

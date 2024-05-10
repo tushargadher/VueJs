@@ -49,6 +49,7 @@
 <script>
 import products from "../../../static/products";
 export default {
+  name:'product-details',
   validate({ params }) {
     //this is validate that the id params must be string and digit
     return typeof params.id === "string" && /^\d+$/.test(params.id);
