@@ -1,9 +1,11 @@
 <template>
-  <div class="popup">
-    <h3>{{ title }}</h3>
+  <div class="container">
+    <div class="popup">
+      <h3>{{ title }}</h3>
 
-    <!-- here we are sending closepopup event to parent using the $emit -->
-    <CustomButton buttonTitle="Close" @clicked="$emit('closepopup')" />
+      <!-- here we are sending closepopup event to parent using the $emit -->
+      <CustomButton buttonTitle="Close" @clicked="$emit('closepopup')" />
+    </div>
   </div>
 </template>
 
@@ -19,7 +21,12 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  height: 100vh;
+  widows: 100vw;
+}
 .popup {
+  display: absolute;
   border: 1px solid gray;
   height: 30%;
   width: 30%;

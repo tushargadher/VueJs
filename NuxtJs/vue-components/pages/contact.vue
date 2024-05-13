@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <!-- emiting custom evet to button component -->
-    <CustomButton buttonTitle="Open Model" @clicked="handleOpen" />
+
+    <ButtonSlot @clicked="handleOpen">Open Model</ButtonSlot>
     <PopUp
       title="click on close buttton to close popup"
       v-show="isVisible"
