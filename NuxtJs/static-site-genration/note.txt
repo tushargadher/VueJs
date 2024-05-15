@@ -1,0 +1,11 @@
+With static site generation you can render your application during the build phase and deploy it to any static hosting services such as Netlify, GitHub pages, Vercel etc. This means that no server is needed in order to deploy your application.
+
+
+for making static site 
+add target:'static' in your next config file
+and run below command
+npm run generate
+
+this commmand will generate dist folder
+
+When deploying your site in with target:static all your .vue pages will be generated into HTML and JavaScript files. All calls to APIs will be made and cached in a folder called static inside your generated content so that no calls to your API need to be made on client side navigation.
