@@ -5,7 +5,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  head() {
+    return {
+      title: "About Page",
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>

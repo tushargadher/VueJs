@@ -9,7 +9,7 @@
 
         <NuxtLink to="/content" class="navbar-item">Content</NuxtLink>
 
-        <NuxtLink to="/more" class="navbar-item">More</NuxtLink>
+        <NuxtLink to="/product" class="navbar-item">product</NuxtLink>
       </div>
     </div>
   </nav>
@@ -29,7 +29,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-
   width: 100%;
   z-index: 100;
 }
