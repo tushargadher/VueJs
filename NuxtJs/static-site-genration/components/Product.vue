@@ -6,6 +6,7 @@
         :src="product.images[0]"
         @error="handleImageError"
         alt="Product Image"
+        @click="navigateTodetailsPage(product.id)"
       />
     </div>
     <div class="product-details">
@@ -29,6 +30,9 @@ export default {
       // Display a fallback image URL directly when the primary image fails to load
       event.target.src =
         "https://www.feed-image-editor.com/sites/default/files/perm/wysiwyg/image_not_available.png"; // Fallback image URL
+    },
+    navigateTodetailsPage(productId) {
+      this.$router.push(`/product/${productId}`);
     },
   },
 };
@@ -60,5 +64,8 @@ export default {
 .description {
   margin-top: 10px;
   color: #666;
+}
+img:hover {
+  cursor: pointer;
 }
 </style>

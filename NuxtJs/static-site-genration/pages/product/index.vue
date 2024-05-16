@@ -1,16 +1,17 @@
 <template>
   <div>
-    <h1>Home page</h1>
+    <Home />
   </div>
 </template>
 
 <script>
 export default {
-  name: "IndexPage",
   head() {
     return {
-      title: "Home Page",
+      title: "Product Page",
     };
   },
 };
 </script>
+
+<style lang="scss" scoped></style>
