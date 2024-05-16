@@ -12,4 +12,4 @@ export default function () {
     .catch((err) => console.error(err));
 }
 
-//middleware can be run of both side server side rendering and clinet side rendering 
+//middleware can be run of both side server side rendering and clinet side rendering

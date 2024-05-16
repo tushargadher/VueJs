@@ -34,6 +34,6 @@ export default {
 
   //to apply middleware in all pages
   router: {
-    middleware: "global",
+    middleware: ["global", "errorHandler"], // Register multiple middleware globally
   },
 };

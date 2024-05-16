@@ -9,5 +9,9 @@ export default {
       title: "Home Page",
     };
   },
+  // Anonymous middleware
+  middleware() {
+    console.log("Anonymous middleware");
+  },
 };
 </script>
