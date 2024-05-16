@@ -1,5 +1,6 @@
 export default {
   target: "static", // Enable static site generation
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   async generate() {
     // Fetch product data from an API
@@ -31,7 +32,8 @@ export default {
   css: ["@/assets/css/main.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+
+  plugins: ["~/plugins/preview.client.js"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
