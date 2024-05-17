@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>Default Layout</h1>
+  <div class="container">
+    <h1></h1>
     <nuxt />
   </div>
 </template>
@@ -9,4 +9,10 @@
 export default {};
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.container {
+  height: 100vh;
+  width: 100vw;
+  background-color: gray;
+}
+</style>
