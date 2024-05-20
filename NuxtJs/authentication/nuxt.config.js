@@ -1,5 +1,4 @@
 export default {
-  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "authentication",
     htmlAttrs: {
@@ -14,30 +13,27 @@ export default {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["@assets/css/main.css"],
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     "@nuxtjs/axios",
-    "@nuxtjs/auth-next", //this module allow us to use $auth.loggedIn and $auth.user
+    "@nuxtjs/auth-next", // Use @nuxtjs/auth-next for the latest version
   ],
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+
   build: {},
+
   axios: {
-    //api url
-    baseURL: " https://api.escuelajs.co/api/v1/",
+    baseURL: "https://api.escuelajs.co/api/v1/", // Ensure there's no leading space
   },
-  //configure auth
+  // router: {
+  //   middleware: ["auth"],
+  // },
   auth: {
     strategies: {
       local: {
@@ -45,13 +41,28 @@ export default {
           login: {
             url: "auth/login",
             method: "post",
-            propertyName: "token",
+            propertyName: "token", // Ensure this matches your API's response
           },
-          logout: { url: "/api/auth/logout", method: "post" },
-          user: { url: "auth/profile", method: "post", propertyName: "user" },
-          //since nuxt auth does not give as register end point,so we are going to create new user oursalves
+          logout: {
+            url: "auth/logout", // Ensure this endpoint is correct
+            method: "post",
+          },
+          user: {
+            url: "auth/profile",
+            method: "get", // Changed to 'get' if the profile is fetched with GET
+            propertyName: "user", // If the user object is directly returned
+          },
+          // since nuxt auth module does not provide register user endpoint we create it with oursalve
         },
+        tokenRequired: true,
+        tokenType: "Bearer",
+        autoFetchUser: true, // Ensure this is set to true
       },
     },
   },
 };
+// [GET] https://api.escuelajs.co/api/v1/auth/profile
+// # Headers
+// {
+//   "Authorization": "Bearer {your access token}"
+// }

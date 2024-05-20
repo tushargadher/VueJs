@@ -5,6 +5,7 @@
 <script>
 export default {
   name: "IndexPage",
+  middleware: "user-auth",
   head() {
     return {
       title: "Auth Module",

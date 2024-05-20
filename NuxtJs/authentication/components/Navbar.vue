@@ -5,12 +5,13 @@
         <nuxt-link to="/" class="navbar-link">Home</nuxt-link>
         <nuxt-link to="/about" class="navbar-link">About</nuxt-link>
       </div>
+
       <div class="navbar-end">
-        <div class="navbar-item" v-if="$auth.loggedIn">
-          <span class="navbar-item">{{ $auth?.user?.email }}</span>
+        <div v-if="$auth.loggedIn" class="navbar-item">
+          <span class="navbar-item">{{ user?.email }}</span>
           <button @click="logout" class="button is-danger">Logout</button>
         </div>
-        <div class="navbar-item" v-else>
+        <div v-else class="navbar-item">
           <nuxt-link to="/login" class="button is-primary">Login</nuxt-link>
           <nuxt-link to="/register" class="button is-primary"
             >Register</nuxt-link

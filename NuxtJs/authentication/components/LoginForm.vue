@@ -38,19 +38,32 @@ export default {
     };
   },
   methods: {
+    async fetchUserDetails(token) {
+      try {
+        const response = await this.$axios.$get("/auth/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("User Details:", response);
+        // Set the user manually from the response
+        this.$auth.setUser(response);
+        console.log(this.$auth.user);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    },
     async handleFormSubmit() {
-      //   console.log(this.userInfo);
-
-      //$auth.loginWith method took two argument one is methdod we are using
-      //here we are using local method, if you are logging with facebook or google , then use write facebook in first argument
-      //second argument is hash value, data hash  , we should send our data in that form that our server can accepts it
+      //$auth.loginWith method took two argument one is methdod we are using      //here we are using local method, if you are logging with facebook or google , then use write facebook in first argument//second argument is hash value, data hash  , we should send our data in that form that our server can accepts it
       try {
         let res = await this.$auth.loginWith("local", {
           data: this.userInfo,
         });
         alert("Login Successful");
-        console.log(res);
-        //redirect to home page after successfull login
+        let token = res.data.access_token;
+        //fetching user data manually because nuxt module can't autofetching this is error in this product
+
+        this.fetchUserDetails(token);
         this.$router.push("/");
       } catch (error) {
         console.log(error);

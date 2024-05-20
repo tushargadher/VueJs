@@ -33,6 +33,7 @@
 </template>
 <script>
 export default {
+  auth: "guest",
   head() {
     return {
       title: "Register Page",
