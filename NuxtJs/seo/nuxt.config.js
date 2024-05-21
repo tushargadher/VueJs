@@ -1,4 +1,6 @@
+const axios = require("axios");
 export default {
+  // mode: "universal", //universal mode enalbles server side rendering
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "SEO-Optimization",
@@ -52,8 +54,33 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ["@nuxtjs/sitemap", "@nuxtjs/robots"],
+  sitemap: {
+    // options
+    hostname: "http://localhost:3000", //Your website’s base URL.
+    gzip: true, //Whether to compress the generated sitemap.
+    // routes: [
+    //   "/page1",
+    //   "/page2",
+    //   List of routes to include in the sitemap ,Add more routes if needed, or use a function to dynamically generate them
+    // ],
 
+    //generating dyamic routes
+    routes: async () => {
+      const { data } = await axios.get(
+        "https://api.escuelajs.co/api/v1/products"
+      ); // Replace with your API endpoint
+      return data.map((product) => `/product/${product.id}`);
+    },
+    exclude: ["/admin"], //List of routes to exclude from the sitemap.
+  },
+  // robots file tells search engine crawlers (like Googlebot) which pages they are allowed to crawl and index
+  robots: {
+    UserAgent: "*", //This line specifies that the following rules apply to all web crawlers , You can also specify a specific user agent if you want to target a specific crawler, like Googlebot.
+    Disallow: "/admin",
+    Allow: "/",
+    Sitemap: "http://localhost:3000/sitemap.xml", //This line provides the URL to the sitemap file. The sitemap helps crawlers understand the structure of your website and find all the pages that should be indexed.
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 };
