@@ -6,7 +6,7 @@
 
 <script>
 export default {
-//   middleware: "user-auth",
+  middleware: "user-auth",
 };
 </script>
 

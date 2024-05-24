@@ -20,6 +20,7 @@
       />
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
+    <Loader :isLoading="isLoading" />
   </form>
 </template>
 <script>
@@ -31,6 +32,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       userInfo: {
         email: "",
         password: "",
@@ -38,41 +40,31 @@ export default {
     };
   },
   methods: {
-    async fetchUserDetails(token) {
-      try {
-        const response = await this.$axios.$get("/auth/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("User Details:", response);
-        // Set the user manually from the response
-        this.$auth.setUser(response);
-        console.log(this.$auth.user);
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    },
     async handleFormSubmit() {
-      //$auth.loginWith method took two argument one is methdod we are using      //here we are using local method, if you are logging with facebook or google , then use write facebook in first argument//second argument is hash value, data hash  , we should send our data in that form that our server can accepts it
       try {
-        let res = await this.$auth.loginWith("local", {
+        this.isLoading = true;
+        // Login and set token
+        await this.$auth.loginWith("local", {
           data: this.userInfo,
         });
-        alert("Login Successful");
-        let token = res.data.access_token;
-        //fetching user data manually because nuxt module can't autofetching this is error in this product
 
-        this.fetchUserDetails(token);
-        this.$router.push("/");
+        // After login, the token should be set automatically by the auth module
+        console.log(
+          "Login successful, token set:",
+          this.$auth.strategy.token.get()
+        );
+
+        console.log("User fetched:", this.$auth.user);
+        this.isLoading = false;
       } catch (error) {
-        console.log(error);
-        alert(error);
+        this.isLoading = false;
+        console.error("Login failed:", error);
       }
     },
   },
 };
 </script>
+
 <style scoped>
 .login-form {
   max-width: 400px;

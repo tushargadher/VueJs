@@ -1,6 +1,7 @@
 export default {
+  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "authentication",
+    title: "user-authentication-system",
     htmlAttrs: {
       lang: "en",
     },
@@ -13,56 +14,51 @@ export default {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
-  css: ["@assets/css/main.css"],
+  // Global CSS: https://go.nuxtjs.dev/config-css
+  css: ["@/assets/css/main.css"],
 
+  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
 
+  // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
+  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [],
 
-  modules: [
-    "@nuxtjs/axios",
-    "@nuxtjs/auth-next", // Use @nuxtjs/auth-next for the latest version
-  ],
-
-  build: {},
-
+  // Modules: https://go.nuxtjs.dev/config-modules
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
   axios: {
-    baseURL: "https://api.escuelajs.co/api/v1/", // Ensure there's no leading space
+    baseURL: " https://api.escuelajs.co/api/v1/",
   },
-  // router: {
-  //   middleware: ["auth"],
-  // },
   auth: {
     strategies: {
       local: {
-        endpoints: {
-          login: {
-            url: "auth/login",
-            method: "post",
-            propertyName: "token", // Ensure this matches your API's response
-          },
-          logout: {
-            url: "auth/logout", // Ensure this endpoint is correct
-            method: "post",
-          },
-          user: {
-            url: "auth/profile",
-            method: "get", // Changed to 'get' if the profile is fetched with GET
-            propertyName: "user", // If the user object is directly returned
-          },
-          // since nuxt auth module does not provide register user endpoint we create it with oursalve
+        token: {
+          property: "access_token",
+          global: true,
+          required: true,
+          type: "Bearer",
         },
-        tokenRequired: true,
-        tokenType: "Bearer",
-        autoFetchUser: true, // Ensure this is set to true
+        refreshToken: {
+          property: "refresh_token",
+          data: "refresh_token",
+        },
+        user: {
+          property: false, // Use the whole response or specify user property if applicable
+          autoFetch: true, // Ensure this is set to true for automatic fetching
+        },
+        endpoints: {
+          login: { url: "auth/login", method: "post" },
+          logout: { url: "/api/auth/logout", method: "post" },
+          user: { url: "auth/profile", method: "get" },
+        },
       },
     },
+
+    // Enable verbose logging
+    debug: true,
   },
+  // Build Configuration: https://go.nuxtjs.dev/config-build
+  build: {},
 };
-// [GET] https://api.escuelajs.co/api/v1/auth/profile
-// # Headers
-// {
-//   "Authorization": "Bearer {your access token}"
-// }

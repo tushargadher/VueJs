@@ -28,7 +28,17 @@
         v-model="userInfo.password"
       />
     </div>
+    <div class="form-group">
+      <label for="url">Profile URL</label>
+      <input
+        type="url"
+        id="url"
+        placeholder="Enter Profile URL"
+        v-model="userInfo.avatar"
+      />
+    </div>
     <button type="submit" class="btn btn-primary">Register</button>
+    <Loader :isLoading="isLoading" />
   </form>
 </template>
 <script>
@@ -41,11 +51,12 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       userInfo: {
         name: "",
         email: "",
         password: "",
-        avatar: "https://cdn-icons-png.freepik.com/512/219/219970.png",
+        avatar: "",
         //adding avatar because in Platzi Fake Store API it is required
       },
     };
@@ -54,13 +65,17 @@ export default {
     async handleFormSubmit() {
       //if we not put this api in try catch then error will be displayed in full screen and break the application
       try {
+        this.isLoading = true;
         //create new user oursalves since nuxt auth does not provide register endpoint
         console.log(this.userInfo);
         let res = await this.$axios.post("users/", this.userInfo);
         console.log(res);
         this.userInfo = "";
+        this.isLoading = false;
         alert("User Registration Successfully");
+        this.$router.push("/login");
       } catch (err) {
+        this.isLoading = false;
         console.error(`error occured while creating user ${err}`);
       }
     },
@@ -87,6 +102,7 @@ label {
 
 input[type="email"],
 input[type="text"],
+input[type="url"],
 input[type="password"] {
   width: 100%;
   padding: 10px;
