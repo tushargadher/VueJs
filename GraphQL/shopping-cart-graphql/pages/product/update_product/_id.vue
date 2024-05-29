@@ -1,43 +1,50 @@
 <template>
   <div class="container">
-    <div class="update-product-container">
+    <div v-if="loading" class="loading-indicator">Please Wait...</div>
+    <div v-else class="update-product-container">
       <h1>Update Product</h1>
-      <form class="update-product-form">
+
+      <form class="update-product-form" @submit.prevent="updateProduct">
         <div class="form-group">
           <label for="title">Title:</label>
           <input
             type="text"
             id="title"
             name="title"
-            value="Fantastic Rubber Towels"
+            v-model="product.title"
             required
           />
         </div>
         <div class="form-group">
           <label for="price">Price:</label>
-          <input type="number" id="price" name="price" value="800" required />
+          <input
+            type="number"
+            id="price"
+            name="price"
+            v-model="product.price"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="description">Description:</label>
-          <textarea id="description" name="description" required>
-The Football Is Good For Training And Recreational Purposes</textarea
-          >
+          <textarea
+            id="description"
+            name="description"
+            v-model="product.description"
+            required
+          ></textarea>
         </div>
         <div class="form-group">
           <label>Images:</label>
-          <div class="images-preview">
-            <img
-              src="https://api.lorem.space/image/furniture?w=640&h=480&r=5902"
-              alt="Product Image 1"
-            />
-            <img
-              src="https://api.lorem.space/image/furniture?w=640&h=480&r=164"
-              alt="Product Image 2"
-            />
-            <img
-              src="https://api.lorem.space/image/furniture?w=640&h=480&r=8528"
-              alt="Product Image 3"
-            />
+          <div class="images-urls">
+            <div v-for="(image, index) in product.images" :key="index">
+              <input
+                type="url"
+                v-model="product.images[index]"
+                placeholder="Image URL"
+                required
+              />
+            </div>
           </div>
         </div>
         <button type="submit">Update Product</button>
@@ -47,7 +54,99 @@ The Football Is Good For Training And Recreational Purposes</textarea
 </template>
 
 <script>
-export default {};
+import gql from "graphql-tag";
+export default {
+  data() {
+    return {
+      product: {},
+      loading: true,
+    };
+  },
+  async mounted() {
+    await this.getProductData();
+  },
+  methods: {
+    // get product details functions
+
+    async getProductData() {
+      try {
+        const response = await this.$apollo.query({
+          query: gql`
+            query getProduct($id: ID!) {
+              product(id: $id) {
+                id
+                title
+                price
+                description
+                images
+              }
+            }
+          `,
+          variables: {
+            id: this.$route.params.id,
+          },
+        });
+        console.log(response.data.product);
+        this.product = response.data.product;
+      } catch (error) {
+        console.log(`Error while fetching product data ${error}`);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    //update product function
+    async updateProduct() {
+      this.loading = true;
+      const price = parseFloat(this.product.price);
+      try {
+        const response = await this.$apollo.mutate({
+          mutation: gql`
+            mutation updateProduct(
+              $id: ID!
+              $title: String!
+              $price: Float!
+              $description: String!
+              $images: [String!]!
+            ) {
+              updateProduct(
+                id: $id
+                changes: {
+                  title: $title
+                  price: $price
+                  description: $description
+                  images: $images
+                }
+              ) {
+                id
+                title
+                price
+                description
+                images
+              }
+            }
+          `,
+          variables: {
+            // Corrected spelling
+            id: this.$route.params.id,
+            title: this.product.title,
+            price: price,
+            description: this.product.description,
+            images: this.product.images,
+          },
+        });
+        if (response) {
+          this.loading = false;
+          alert("Product Upated");
+          this.$router.push("/product");
+        }
+      } catch (error) {
+        this.loading = false;
+        console.error(`Error while updating product ${error}`);
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -95,8 +194,9 @@ export default {};
   height: 100px;
 }
 
-.images-preview {
+.images-urls {
   display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 

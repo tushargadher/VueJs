@@ -8,6 +8,7 @@
             :key="index"
             :src="image"
             alt="Product Image"
+            @error="handleImageError"
           />
         </div>
         <div class="product-details">
@@ -25,6 +26,12 @@
 import gql from "graphql-tag";
 
 export default {
+  methods: {
+    handleImageError(e) {
+      e.target.src =
+        "https://www.feed-image-editor.com/sites/default/files/perm/wysiwyg/image_not_available.png";
+    },
+  },
   apollo: {
     product: {
       query: gql`

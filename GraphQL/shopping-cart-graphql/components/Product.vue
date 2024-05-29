@@ -5,6 +5,7 @@
       alt="Product Image"
       v-if="product.images.length > 0"
       @click="redirectToProduct(product.id)"
+      @error="handleImageError"
     />
     <h2>{{ product.title }}</h2>
     <p>{{ product.description }}</p>
@@ -31,6 +32,10 @@ export default {
     },
   },
   methods: {
+    handleImageError(e) {
+      e.target.src =
+        "https://www.feed-image-editor.com/sites/default/files/perm/wysiwyg/image_not_available.png";
+    },
     redirectToProduct(id) {
       this.$router.push(`product/${id}`);
     },
@@ -54,6 +59,10 @@ export default {
             },
           });
           console.log(response);
+          if (response) {
+            //emit delete product so we can listen into parent
+            this.$emit("deleteProduct", this.product.id);
+          }
         } catch (error) {
           console.error(`Error while deleting product ${error}`);
         }

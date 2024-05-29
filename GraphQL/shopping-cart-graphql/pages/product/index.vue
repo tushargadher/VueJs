@@ -1,7 +1,12 @@
 <template>
-  <div v-if="loading">Please wait...</div>
+  <div v-if="loading" class="container loading-indicator">Please wait...</div>
   <div v-else class="container">
-    <Product v-for="product in products" :key="product.id" :product="product" />
+    <Product
+      v-for="product in products"
+      :key="product.id"
+      :product="product"
+      @deleteProduct="hadnleDeleteProductEvent"
+    />
   </div>
 </template>
 
@@ -13,6 +18,15 @@ export default {
       loading: true,
       products: null,
     };
+  },
+  methods: {
+    hadnleDeleteProductEvent(productID) {
+      alert(`Product Deleted With ID ${productID}`);
+      //filter out deleted product from product array
+      this.products = this.products.filter(
+        (product) => product.id !== productID
+      );
+    },
   },
   apollo: {
     products: {
