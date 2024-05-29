@@ -98,7 +98,7 @@ export default {
     //update product function
     async updateProduct() {
       this.loading = true;
-      const price = parseFloat(this.product.price);
+      const price = parseFloat(this.product.price); //due to schema
       try {
         const response = await this.$apollo.mutate({
           mutation: gql`

@@ -1,26 +1,84 @@
 <template>
   <div class="login-container">
-    <form class="login-form">
+    <form class="login-form" @submit.prevent="handleLogin">
       <h2>Login</h2>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          v-model="userData.email"
+          required
+        />
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          v-model="userData.password"
+          required
+        />
       </div>
-      <div class="form-group">
-        <label for="url">Avatar:</label>
-        <input type="url" id="url" name="url" required />
-      </div>
-      <button type="submit">Login</button>
+
+      <button type="submit">
+        <Loader v-if="loading" />
+        <p v-else>Login</p>
+      </button>
     </form>
   </div>
 </template>
 
 <script>
-export default {};
+import gql from "graphql-tag";
+export default {
+  data() {
+    return {
+      userData: {
+        email: "",
+        password: "",
+      },
+      loading: false,
+    };
+  },
+  methods: {
+    async handleLogin() {
+      this.loading = true;
+      try {
+        const response = await this.$apollo.mutate({
+          mutation: gql`
+            mutation login($email: String!, $password: String!) {
+              login(email: $email, password: $password) {
+                access_token
+              }
+            }
+          `,
+          variables: {
+            email: this.userData.email,
+            password: this.userData.password,
+          },
+        });
+
+        console.log(response.data.login.access_token);
+        if (response.data) {
+          this.loading = false;
+          this.$store.commit(
+            "SET_ACCESSTOKEN",
+            response.data.login.access_token
+          );
+          alert("Logged in successfull");
+          this.$router.push("/");
+        }
+      } catch (error) {
+        this.loading = false;
+        console.error(`Error while log in ${error}`);
+        alert(error);
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -13,6 +13,7 @@
 <script>
 import gql from "graphql-tag";
 export default {
+  middleware: "auth",
   data() {
     return {
       loading: true,

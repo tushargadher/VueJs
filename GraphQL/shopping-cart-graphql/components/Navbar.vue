@@ -5,15 +5,37 @@
       <NuxtLink to="/product" class="nav-link">Product</NuxtLink>
     </div>
     <div class="nav-right">
-      <NuxtLink to="/signUp"><button class="btn">SignUp</button></NuxtLink>
-      <NuxtLink to="/login"><button class="btn">Login</button></NuxtLink>
-      <button class="btn logout">Logout</button>
+      <button class="btn logout" v-if="accessToken" @click="handleLogout">
+        Logout
+      </button>
+
+      <NuxtLink to="/signUp" v-if="!accessToken"
+        ><button class="btn">SignUp</button></NuxtLink
+      >
+      <NuxtLink to="/login" v-if="!accessToken"
+        ><button class="btn">Login</button></NuxtLink
+      >
     </div>
   </nav>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    handleLogout() {
+      let conform = confirm("Are you sure?");
+      if (conform) {
+        this.$store.commit("REMOVE_ACCESSTOKEN", null);
+        this.$router.push("/login");
+      }
+    },
+  },
+  computed: {
+    accessToken() {
+      return this.$store.state.accessToken;
+    },
+  },
+};
 </script>
 
 <style scoped>
