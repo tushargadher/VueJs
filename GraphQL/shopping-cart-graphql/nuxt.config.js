@@ -12,13 +12,20 @@ export default {
       { name: "format-detection", content: "telephone=no" },
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    script: [
+      {
+        src: "https://kit.fontawesome.com/e850630278.js",
+        crossorigin: "anonymous",
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["@assets/css/main.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+
+  plugins: [{ src: "@/plugins/cookies.js", mode: "client" }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -27,7 +34,7 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/apollo"],
+  modules: ["@nuxtjs/apollo", "cookie-universal-nuxt"],
 
   apollo: {
     clientConfigs: {

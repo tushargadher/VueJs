@@ -8,7 +8,8 @@
       @error="handleImageError"
     />
     <h2>{{ product.title }}</h2>
-    <p>{{ product.description }}</p>
+    <p>{{ productId }}</p>
+    <p v-if="productId">{{ product.description }}</p>
     <p class="price">Price: ${{ product.price }}</p>
     <p class="category">Category: {{ product.category.name }}</p>
     <div>
@@ -29,6 +30,11 @@ export default {
     product: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    productId() {
+      return this.$route.params.id;
     },
   },
   methods: {

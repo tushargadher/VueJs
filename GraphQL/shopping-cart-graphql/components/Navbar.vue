@@ -25,14 +25,14 @@ export default {
     handleLogout() {
       let conform = confirm("Are you sure?");
       if (conform) {
-        this.$store.commit("REMOVE_ACCESSTOKEN", null);
+        this.$cookies.remove('accessToken');
         this.$router.push("/login");
       }
     },
   },
   computed: {
     accessToken() {
-      return this.$store.state.accessToken;
+      return this.$cookies.get("accessToken");
     },
   },
 };

@@ -47,7 +47,10 @@
           required
         />
       </div>
-      <button type="submit">
+      <div class="form-group">
+        <b>Already have an account ? </b><NuxtLink to="/login">Login</NuxtLink>
+      </div>
+      <button type="submit" class="button">
         <Loader v-if="loading" />
         <p v-else>Sign Up</p>
       </button>
@@ -58,6 +61,7 @@
 <script>
 import gql from "graphql-tag";
 export default {
+  layout: "authLayout",
   data() {
     return {
       userData: {
@@ -165,40 +169,5 @@ span {
   font-size: 24px;
   color: #333;
   text-align: center;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #555;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
 }
 </style>

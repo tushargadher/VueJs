@@ -14,16 +14,23 @@
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          v-model="userData.password"
-          required
-        />
+        <div class="password-container">
+          <input
+            :type="showPassword ? 'text' : 'password'"
+            id="password"
+            name="password"
+            v-model="userData.password"
+            ref="passwordField"
+            required
+          />
+          <i :class="passwordIconClass" @click="togglePasswordField"></i>
+        </div>
+      </div>
+      <div class="form-group">
+        <b>Don't Have Account ? </b><NuxtLink to="/signUp">Register</NuxtLink>
       </div>
 
-      <button type="submit">
+      <button type="submit" class="button">
         <Loader v-if="loading" />
         <p v-else>Login</p>
       </button>
@@ -34,6 +41,7 @@
 <script>
 import gql from "graphql-tag";
 export default {
+  layout: "authLayout",
   data() {
     return {
       userData: {
@@ -41,9 +49,20 @@ export default {
         password: "",
       },
       loading: false,
+      showPassword: false,
     };
   },
+  computed: {
+    passwordIconClass() {
+      return this.showPassword
+        ? "fa-regular fa-eye-slash icon"
+        : "fa-regular fa-eye icon";
+    },
+  },
   methods: {
+    togglePasswordField() {
+      this.showPassword = !this.showPassword;
+    },
     async handleLogin() {
       this.loading = true;
       try {
@@ -61,14 +80,14 @@ export default {
           },
         });
 
-        console.log(response.data.login.access_token);
-        if (response.data) {
+        let accessToken = response.data.login.access_token;
+        if (accessToken !== null && accessToken !== undefined) {
           this.loading = false;
-          this.$store.commit(
-            "SET_ACCESSTOKEN",
-            response.data.login.access_token
-          );
-          alert("Logged in successfull");
+          this.$cookies.set("accessToken", accessToken, {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
+          });
+          alert("Logged in successfully");
           this.$router.push("/");
         }
       } catch (error) {
@@ -80,7 +99,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .login-container {
   display: flex;
@@ -113,8 +131,7 @@ export default {
 .form-group label {
   display: block;
   margin-bottom: 5px;
-  font-size: 14px;
-  color: #555;
+  font-weight: bold;
 }
 
 .form-group input {
@@ -122,22 +139,24 @@ export default {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 14px;
+  box-sizing: border-box;
 }
 
-button {
+.password-container {
+  position: relative;
   width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
+.password-container input {
+  width: 100%;
+  padding-right: 30px; /* Adjust padding to avoid overlap with icon */
+}
+
+.password-container .icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 </style>

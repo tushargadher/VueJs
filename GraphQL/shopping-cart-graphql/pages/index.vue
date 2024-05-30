@@ -8,5 +8,10 @@
 export default {
   middleware: "auth",
   name: "IndexPage",
+  // apollo:{
+  //   user:{
+      
+  //   }
+  // }
 };
 </script>
