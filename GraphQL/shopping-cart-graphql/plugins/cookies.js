@@ -1,6 +1,6 @@
 // plugins/cookies.js
 
-import Vue from "vue";
-import VueCookies from "cookie-universal-nuxt";
+import Vue from 'vue';
+import VueCookies from 'vue-cookies';
 
 Vue.use(VueCookies);

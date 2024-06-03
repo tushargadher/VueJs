@@ -8,7 +8,7 @@
   flex-wrap: wrap;
   min-height: 100vh;
   justify-content: space-around;
-  padding: 100px 20px;
+  padding: 100px 200px;
   background-color: #f0f2f5;
 }
 .loading-indicator {
@@ -57,4 +57,15 @@ a {
 
 .button:hover {
   background-color: #0056b3;
+}
+
+@media only screen and (max-width: 1200px) {
+  .container {
+    padding: 100px;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .container {
+    padding: 100px 30px;
+  }
 }

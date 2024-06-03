@@ -8,10 +8,10 @@
 export default {
   middleware: "auth",
   name: "IndexPage",
-  // apollo:{
-  //   user:{
-      
-  //   }
-  // }
 };
 </script>
+<style scoped>
+img {
+  height: 200px;
+}
+</style>
