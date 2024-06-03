@@ -8,7 +8,7 @@
       @error="handleImageError"
     />
     <h2>{{ product.title }}</h2>
-    <p>{{ productId }}</p>
+
     <!-- <p>{{ product.description }}</p> -->
     <p class="price">Price: ${{ product.price }}</p>
     <p class="category">Category: {{ product.category.name }}</p>
