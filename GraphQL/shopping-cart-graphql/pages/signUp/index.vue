@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
+import { ADD_USER_LOGIN } from "../../GraphQL/Mutations/mutations";
 export default {
   layout: "authLayout",
   data() {
@@ -84,27 +84,7 @@ export default {
       this.loading = true;
       try {
         const response = await this.$apollo.mutate({
-          mutation: gql`
-            mutation addUser(
-              $name: String!
-              $email: String!
-              $password: String!
-              $avatar: String!
-            ) {
-              addUser(
-                data: {
-                  name: $name
-                  email: $email
-                  password: $password
-                  avatar: $avatar
-                }
-              ) {
-                id
-                name
-                avatar
-              }
-            }
-          `,
+          mutation: ADD_USER_LOGIN,
           variables: {
             name: this.userData.name,
             email: this.userData.email,

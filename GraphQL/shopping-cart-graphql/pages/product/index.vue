@@ -49,8 +49,12 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
 import { debounce } from "lodash";
+import {
+  GET_PRODUCT_AND_CATEGORIES,
+  GET_PRODUCT_BY_CATEGORIES,
+  SEARCH_PRODUCT,
+} from "../../GraphQL/Query/query";
 
 export default {
   middleware: "auth",
@@ -90,27 +94,7 @@ export default {
       this.loading = true;
       try {
         const response = await this.$apollo.query({
-          query: gql`
-            query getProductsAndCategories($limit: Int, $offset: Int) {
-              products(limit: $limit, offset: $offset) {
-                id
-                title
-                price
-                description
-                images
-                category {
-                  id
-                  name
-                  image
-                }
-              }
-              categories {
-                id
-                name
-                image
-              }
-            }
-          `,
+          query: GET_PRODUCT_AND_CATEGORIES,
           variables: {
             limit: this.limit,
             offset: this.offset,
@@ -129,22 +113,7 @@ export default {
       console.log(e.target.value);
       try {
         const response = await this.$apollo.query({
-          query: gql`
-            query getProductsByCategory($categoryId: Float!) {
-              products(categoryId: $categoryId) {
-                id
-                title
-                price
-                description
-                images
-                category {
-                  id
-                  name
-                  image
-                }
-              }
-            }
-          `,
+          query: GET_PRODUCT_BY_CATEGORIES,
           variables: {
             categoryId: this.selectedCategory,
           },
@@ -170,22 +139,7 @@ export default {
       }
       try {
         const response = await this.$apollo.query({
-          query: gql`
-            query searchProduct($title: String, $categoryId: Float) {
-              products(title: $title, categoryId: $categoryId) {
-                id
-                title
-                price
-                description
-                images
-                category {
-                  id
-                  name
-                  image
-                }
-              }
-            }
-          `,
+          query: SEARCH_PRODUCT,
           variables: {
             title: this.searchQuery,
             categoryId: this.selectedCategory || null, // Pass null if no category is selected
