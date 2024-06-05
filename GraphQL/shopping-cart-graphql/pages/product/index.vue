@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading" class="container loading-indicator">
-    <Loader />
+    <FullLoader />
   </div>
   <div v-else class="container">
     <div class="filter-product">
@@ -17,7 +17,7 @@
       <select name="category" id="category" @change="filterBycategory">
         <option value="" selected>Select Category</option>
         <option
-          v-for="category in categroys"
+          v-for="category in categories"
           :key="category.id"
           :value="category.id"
         >
@@ -39,6 +39,12 @@
     <div v-else>
       <NotFound />
     </div>
+    <div class="pagination" v-show="!selectedCategory && !searchQuery">
+      <button class="button" @click="handlePreviousPage" v-show="this.offset">
+        Previous
+      </button>
+      <button class="button" @click="handleNextPage">Next</button>
+    </div>
   </div>
 </template>
 
@@ -50,19 +56,76 @@ export default {
   middleware: "auth",
   data() {
     return {
-      loading: true,
+      loading: false,
       products: [],
-      categroys: [],
+      categories: [],
       searchQuery: "",
-      SelectedCategory: null,
+      selectedCategory: null,
+      offset: 0,
+      limit: 9,
     };
   },
   created() {
+    this.fetchProductsandCategory();
     this.debouncedHandleSearch = debounce(this.handleSearch, 400);
   },
+  watch: {
+    offset() {
+      this.fetchProductsandCategory();
+    },
+  },
   methods: {
+    handleNextPage() {
+      if (this.products.length < this.limit) {
+        alert("You are not last page");
+      } else {
+        this.offset += this.limit;
+      }
+    },
+    handlePreviousPage() {
+      this.offset -= this.limit;
+    },
+    async fetchProductsandCategory() {
+      // console.log("fetching product");
+      this.loading = true;
+      try {
+        const response = await this.$apollo.query({
+          query: gql`
+            query getProductsAndCategories($limit: Int, $offset: Int) {
+              products(limit: $limit, offset: $offset) {
+                id
+                title
+                price
+                description
+                images
+                category {
+                  id
+                  name
+                  image
+                }
+              }
+              categories {
+                id
+                name
+                image
+              }
+            }
+          `,
+          variables: {
+            limit: this.limit,
+            offset: this.offset,
+          },
+        });
+        this.loading = false;
+        this.products = response.data ? response.data.products : null;
+        this.categories = response.data ? response.data.categories : null;
+      } catch (error) {
+        this.loading = false;
+        console.log(`error while fetching products ${error}`);
+      }
+    },
     async filterBycategory(e) {
-      this.SelectedCategory = parseFloat(e.target.value);
+      this.selectedCategory = parseFloat(e.target.value);
       console.log(e.target.value);
       try {
         const response = await this.$apollo.query({
@@ -83,7 +146,7 @@ export default {
             }
           `,
           variables: {
-            categoryId: this.SelectedCategory,
+            categoryId: this.selectedCategory,
           },
         });
         // console.log(response);
@@ -96,13 +159,15 @@ export default {
     //delete product
     hadnleDeleteProductEvent(productID) {
       alert(`Product Deleted With ID ${productID}`);
-      this.products = this.products.filter(
-        (product) => product.id !== productID
-      );
+      this.fetchProductsandCategory();
     },
 
     //search product
     async handleSearch() {
+      if (!this.searchQuery) {
+        this.fetchProductsandCategory();
+        return;
+      }
       try {
         const response = await this.$apollo.query({
           query: gql`
@@ -123,7 +188,7 @@ export default {
           `,
           variables: {
             title: this.searchQuery,
-            categoryId: this.SelectedCategory || null, // Pass null if no category is selected
+            categoryId: this.selectedCategory || null, // Pass null if no category is selected
           },
         });
         console.log(response.data.products);
@@ -131,38 +196,6 @@ export default {
       } catch (error) {
         console.error(`Error while searching product: ${error}`);
       }
-    },
-  },
-  apollo: {
-    products: {
-      query: gql`
-        query getProductsAndCategories {
-          products {
-            id
-            title
-            price
-            description
-            images
-            category {
-              id
-              name
-              image
-            }
-          }
-          categories {
-            id
-            name
-            image
-          }
-        }
-      `,
-      //   The result function in the Apollo integration for Vue and Nuxt.js is a callback function that gets executed whenever the Apollo query's state changes.
-      result({ loading, error, data }) {
-        this.loading = loading;
-        this.error = error;
-        this.products = data ? data.products : null;
-        this.categroys = data ? data.categories : null;
-      },
     },
   },
 };
@@ -195,5 +228,22 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
+}
+.pagination {
+  display: flex;
+  justify-content: space-evenly;
+}
+.button {
+  width: fit-content;
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    padding: 100px;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .container {
+    padding: 100px 30px;
+  }
 }
 </style>
