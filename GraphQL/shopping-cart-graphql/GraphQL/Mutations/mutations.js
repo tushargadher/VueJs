@@ -16,3 +16,37 @@ export const ADD_USER_LOGIN = gql`
     }
   }
 `;
+
+export const USER_LOGIN = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      access_token
+    }
+  }
+`;
+
+export const UPDATE_PRODUCT = gql`
+  mutation updateProduct(
+    $id: ID!
+    $title: String!
+    $price: Float!
+    $description: String!
+    $images: [String!]!
+  ) {
+    updateProduct(
+      id: $id
+      changes: {
+        title: $title
+        price: $price
+        description: $description
+        images: $images
+      }
+    ) {
+      id
+      title
+      price
+      description
+      images
+    }
+  }
+`;

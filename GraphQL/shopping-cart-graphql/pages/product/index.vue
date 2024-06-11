@@ -11,6 +11,7 @@
         placeholder="Search for a product"
         class="search-input"
         @input="debouncedHandleSearch"
+        loading="lazy"
       />
 
       <!-- redner categorys dymacally -->
@@ -33,7 +34,7 @@
         v-for="product in products"
         :key="product.id"
         :product="product"
-        @deleteProduct="hadnleDeleteProductEvent"
+        @deleteProduct="handleDeleteProductEvent"
       />
     </div>
     <div v-else>
@@ -108,6 +109,8 @@ export default {
         console.log(`error while fetching products ${error}`);
       }
     },
+
+    //filter by category
     async filterBycategory(e) {
       this.selectedCategory = parseFloat(e.target.value);
       console.log(e.target.value);
@@ -123,12 +126,6 @@ export default {
       } catch (error) {
         console.error(`Error while fetching product category wise ${error}`);
       }
-    },
-
-    //delete product
-    hadnleDeleteProductEvent(productID) {
-      alert(`Product Deleted With ID ${productID}`);
-      this.fetchProductsandCategory();
     },
 
     //search product
@@ -150,6 +147,11 @@ export default {
       } catch (error) {
         console.error(`Error while searching product: ${error}`);
       }
+    },
+    //delete product
+    handleDeleteProductEvent(productID) {
+      alert(`Product Deleted With ID ${productID}`);
+      this.fetchProductsandCategory();
     },
   },
 };

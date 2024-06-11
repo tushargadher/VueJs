@@ -61,6 +61,21 @@
 <script>
 import { ADD_USER_LOGIN } from "../../GraphQL/Mutations/mutations";
 export default {
+  // Global page headers: https://go.nuxtjs.dev/config-head
+  head() {
+    return {
+      title: "Register - Shopping Cart",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Register securely to access personalized recommendations",
+        },
+        // Add more meta tags as needed
+      ],
+    };
+  },
+
   layout: "authLayout",
   data() {
     return {

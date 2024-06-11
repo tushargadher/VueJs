@@ -5,19 +5,24 @@
       <NuxtLink to="/product" class="nav-link">Product</NuxtLink>
     </div>
     <div class="nav-right">
-      <div class="user-info">
+      <div class="user-info" v-if="user.name">
         <img :src="user.avatar" alt="profile" />
-        <p>{{ user?.name }}</p>
+        <p>{{ user.name }}</p>
       </div>
       <button class="btn logout" v-if="accessToken" @click="handleLogout">
         Logout
       </button>
-
-      <NuxtLink to="/signUp" v-if="!accessToken"
-        ><button class="btn">SignUp</button></NuxtLink
+      <div class="cart" :class="{ 'no-active': isCartPage }">
+        <NuxtLink to="/cart" class="cart-link">
+          <b v-if="totalCartItem">{{ totalCartItem }}</b>
+          <i class="fa-solid fa-cart-shopping"></i>
+        </NuxtLink>
+      </div>
+      <NuxtLink to="/signUp" v-if="!accessToken" class="auth-link"
+        >SignUp</NuxtLink
       >
-      <NuxtLink to="/login" v-if="!accessToken"
-        ><button class="btn">Login</button></NuxtLink
+      <NuxtLink to="/login" v-if="!accessToken" class="auth-link"
+        >Login</NuxtLink
       >
     </div>
   </nav>
@@ -25,6 +30,7 @@
 
 <script>
 import gql from "graphql-tag";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -36,6 +42,7 @@ export default {
       },
       loading: true,
       error: null,
+      isCartPage: false,
     };
   },
   methods: {
@@ -48,6 +55,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      totalCartItem: "totalCartItem",
+    }),
     accessToken() {
       return this.$cookies.get("accessToken");
     },
@@ -86,7 +96,6 @@ export default {
 
 <style scoped>
 .user-info {
-  /* border: 1px solid black; */
   display: flex;
   align-items: center;
   margin-right: 20px;
@@ -104,12 +113,22 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #007bff; /* Bootstrap blue color */
-  padding: 0 200px;
+  background-color: #007bff;
+  padding: 0 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
-  width: 100vw;
+  width: 100%;
   z-index: 999;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
 }
 
 .nav-link {
@@ -120,18 +139,49 @@ export default {
   padding: 5px 0;
   transition: color 0.3s ease;
 }
-.nav-right {
+.nav-link:hover {
+  color: #ffdd57;
+}
+
+.navbar a {
+  font-family: "Arial", sans-serif;
+}
+
+.no-active .cart-link {
+  border-bottom: none;
+}
+
+.cart {
+  position: relative;
+  margin-left: 20px;
+}
+
+.cart-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
 }
-.nav-link:hover {
-  color: #ffdd57; /* Yellow color for hover */
+
+.cart i {
+  font-size: 1.5rem;
+  margin-left: 5px;
 }
-.nuxt-link-exact-active {
-  border-bottom: 2px solid white;
+
+.cart b {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8rem;
 }
+
 .btn {
-  background-color: #28a745; /* Bootstrap green color */
+  background-color: #28a745;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -142,20 +192,27 @@ export default {
 }
 
 .btn:hover {
-  background-color: #218838; /* Darker green for hover */
+  background-color: #218838;
   transform: scale(1.05);
 }
 
 .logout {
-  background-color: #dc3545; /* Bootstrap red color */
+  background-color: #dc3545;
 }
 
 .logout:hover {
-  background-color: #c82333; /* Darker red for hover */
+  background-color: #c82333;
 }
 
-.navbar a,
-.navbar button {
-  font-family: "Arial", sans-serif;
+.auth-link {
+  text-decoration: none;
+  color: white;
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar {
+    padding: 0 10px;
+  }
 }
 </style>

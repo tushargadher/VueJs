@@ -9,15 +9,22 @@
     />
     <h2>{{ product.title }}</h2>
 
-    <!-- <p>{{ product.description }}</p> -->
     <p class="price">Price: ${{ product.price }}</p>
     <p class="category">Category: {{ product.category.name }}</p>
-    <div>
-      <button class="delete-btn btn" @click="deleteProduct(product.id)">
-        Delete
+    <div class="button-group">
+      <button class="delete-btn btn" @click="deleteProduct">
+        <span class="icon-wrapper red-bg"
+          ><i class="fas fa-trash-alt"></i
+        ></span>
       </button>
       <button class="update-btn btn" @click="redirectToUpdatePage(product.id)">
-        Update
+        <span class="icon-wrapper green-bg"><i class="fas fa-edit"></i></span>
+      </button>
+      <button class="add-to-cart-btn btn" @click="handleAddtoCart(product)">
+        ADD TO CART
+        <span class="icon-wrapper yellow-bg"
+          ><i class="fas fa-cart-plus"></i
+        ></span>
       </button>
     </div>
   </div>
@@ -34,6 +41,12 @@ export default {
   },
 
   methods: {
+    // Add to cart product
+    handleAddtoCart(productData) {
+      console.log(productData);
+      this.$store.commit("ADD_TO_CART", productData);
+    },
+
     handleImageError(e) {
       e.target.src =
         "https://www.feed-image-editor.com/sites/default/files/perm/wysiwyg/image_not_available.png";
@@ -46,10 +59,10 @@ export default {
       this.$router.push(`product/update_product/${id}`);
     },
     async deleteProduct() {
-      let confrom = confirm("Delete Product?");
-      if (confrom) {
+      let conform = confirm("Delete Product?");
+      if (conform) {
         try {
-          //make graphql mutation call to delete product
+          // Make GraphQL mutation call to delete product
           const response = await this.$apollo.mutate({
             mutation: gql`
               mutation deleteProduct($id: ID!) {
@@ -62,7 +75,7 @@ export default {
           });
           console.log(response);
           if (response) {
-            //emit delete product so we can listen into parent
+            // Emit delete product so we can listen into parent
             this.$emit("deleteProduct", this.product.id);
           }
         } catch (error) {
@@ -81,6 +94,7 @@ export default {
   padding: 16px;
   margin-bottom: 16px;
   width: 30%;
+  min-width: 250px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background-color: #fff;
@@ -96,9 +110,6 @@ export default {
   height: auto;
   border-radius: 8px;
   margin-bottom: 16px;
-}
-.product img:hover {
-  cursor: pointer;
 }
 
 .product h2 {
@@ -123,19 +134,45 @@ export default {
   font-style: italic;
   color: #555;
 }
-.delete-btn {
+
+.button-group {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-btn,
+.update-btn,
+.add-to-cart-btn {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.delete-btn .icon-wrapper,
+.update-btn .icon-wrapper,
+.add-to-cart-btn .icon-wrapper {
+  display: inline-block;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.red-bg {
   background-color: #dc3545;
 }
-.update-btn {
+
+.green-bg {
   background-color: #218838;
 }
-.btn {
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+
+.yellow-bg {
+  background-color: #ffc107;
+}
+
+.btn:hover .icon-wrapper {
+  transform: scale(1.1);
 }
 </style>

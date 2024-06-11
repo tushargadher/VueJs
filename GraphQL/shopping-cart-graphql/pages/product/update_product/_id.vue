@@ -47,14 +47,15 @@
             </div>
           </div>
         </div>
-        <button type="submit">Update Product</button>
+        <button type="submit"><Loader v-if="loading" /> Update Product</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import gql from "graphql-tag";
+import { GET_PRODUCT_BY_ID } from "../../../GraphQL/Query/query";
+import { UPDATE_PRODUCT } from "../../../GraphQL/Mutations/mutations";
 export default {
   data() {
     return {
@@ -66,22 +67,17 @@ export default {
     await this.getProductData();
   },
   methods: {
+    head() {
+      return {
+        title: `Update Product - ${this.product.title}`,
+      };
+    },
     // get product details functions
 
     async getProductData() {
       try {
         const response = await this.$apollo.query({
-          query: gql`
-            query getProduct($id: ID!) {
-              product(id: $id) {
-                id
-                title
-                price
-                description
-                images
-              }
-            }
-          `,
+          query: GET_PRODUCT_BY_ID,
           variables: {
             id: this.$route.params.id,
           },
@@ -101,33 +97,8 @@ export default {
       const price = parseFloat(this.product.price); //due to schema
       try {
         const response = await this.$apollo.mutate({
-          mutation: gql`
-            mutation updateProduct(
-              $id: ID!
-              $title: String!
-              $price: Float!
-              $description: String!
-              $images: [String!]!
-            ) {
-              updateProduct(
-                id: $id
-                changes: {
-                  title: $title
-                  price: $price
-                  description: $description
-                  images: $images
-                }
-              ) {
-                id
-                title
-                price
-                description
-                images
-              }
-            }
-          `,
+          mutation: UPDATE_PRODUCT,
           variables: {
-            // Corrected spelling
             id: this.$route.params.id,
             title: this.product.title,
             price: price,

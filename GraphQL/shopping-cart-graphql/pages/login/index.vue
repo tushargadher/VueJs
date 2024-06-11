@@ -39,8 +39,21 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
+import { USER_LOGIN } from "../../GraphQL/Mutations/mutations";
 export default {
+  head() {
+    return {
+      title: "Login - Shopping Cart",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content:
+            "Securely log in to your eCommerce Site account to Enjoy a personalized shopping experience.",
+        },
+      ],
+    };
+  },
   layout: "authLayout",
   data() {
     return {
@@ -55,8 +68,8 @@ export default {
   computed: {
     passwordIconClass() {
       return this.showPassword
-        ? "fa-regular fa-eye-slash icon"
-        : "fa-regular fa-eye icon";
+        ? "fa-regular fa-eye icon"
+        : " fa-regular fa-eye-slash icon";
     },
   },
   methods: {
@@ -67,13 +80,7 @@ export default {
       this.loading = true;
       try {
         const response = await this.$apollo.mutate({
-          mutation: gql`
-            mutation login($email: String!, $password: String!) {
-              login(email: $email, password: $password) {
-                access_token
-              }
-            }
-          `,
+          mutation: USER_LOGIN,
           variables: {
             email: this.userData.email,
             password: this.userData.password,
