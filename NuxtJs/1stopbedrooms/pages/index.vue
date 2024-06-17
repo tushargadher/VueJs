@@ -32,6 +32,9 @@
           :Filter="badge"
           @removeFilter="handleRemoveBadge"
         />
+        <button v-show="filterBadge.length" @click="handleClearFilters">
+          Clear Filters
+        </button>
       </div>
       <!-- products container -->
       <div class="products">
@@ -130,6 +133,20 @@ export default {
   },
 
   methods: {
+    handleClearFilters() {
+      this.filterBadge = [];
+      const query = { ...this.$route.query };
+
+      for (const key in query) {
+        if (key !== "sortBy" && key !== "parPage" && key !== "page") {
+          delete query[key];
+        }
+      }
+
+      this.$router.push({ query });
+      this.parseFacetFromQuery(query);
+      this.getProducts();
+    },
     handleRemoveBadge({ attrValue }) {
       // Remove the filter from the URL query
       const query = { ...this.$route.query };
@@ -148,6 +165,7 @@ export default {
       this.$router.push({ query });
       this.parseFacetFromQuery(query);
       this.getProducts();
+      console.log(this.filterBadge);
     },
     parseFacetFromQuery(query) {
       this.facet = [];
@@ -294,5 +312,13 @@ export default {
   flex-wrap: wrap;
   width: 100%;
   min-height: 80vh;
+}
+.filterBadge-container button {
+  border: none;
+  background: transparent;
+  color: blue;
+}
+.filterBadge-container button:hover {
+  cursor: pointer;
 }
 </style>
