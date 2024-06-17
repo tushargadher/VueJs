@@ -8,7 +8,9 @@
         @filter-change="handleFilterChange"
       />
     </div>
-    <div class="product-container">
+    <div v-if="loading">Loading....</div>
+    <div v-else class="product-container">
+      <!-- header -->
       <div class="header">
         <div class="header-title">
           <b>{{ title }}</b>
@@ -22,6 +24,16 @@
           </select>
         </div>
       </div>
+      <!-- filter badge container -->
+      <div class="filterBadge-container">
+        <filterBadge
+          v-for="badge in filterBadge"
+          :key="badge.attrValue"
+          :Filter="badge"
+          @removeFilter="handleRemoveBadge"
+        />
+      </div>
+      <!-- products container -->
       <div class="products">
         <Product
           v-for="product in products"
@@ -29,6 +41,7 @@
           :product="product"
         />
       </div>
+      <!-- per-page select options -->
       <div>
         <select v-model="parPage" name="pageSize-filter" id="pageSize-filter">
           <option value="PER_PAGE_36">36</option>
@@ -36,6 +49,7 @@
           <option value="PER_PAGE_72">72</option>
         </select>
       </div>
+      <!-- pagination container -->
       <div>
         <Pagination :currentPage="page" :totalPages="totalPages" />
       </div>
@@ -52,13 +66,15 @@ export default {
     return {
       products: [],
       filtersBlock: [],
+      filterBadge: [],
+      facet: [],
       itemsCount: 0,
+      totalPages: 0,
+      page: 1,
       title: "",
       sortBy: "RELEVANCE",
       parPage: "PER_PAGE_36",
-      page: 1,
-      totalPages: 0,
-      facet: [],
+      loading: true,
     };
   },
   created() {
@@ -98,27 +114,42 @@ export default {
         this.sortBy = value || "RELEVANCE";
         this.getProducts();
       },
-      // immediate: true,
     },
     "$route.query.parPage": {
       handler(value) {
         this.parPage = value || "PER_PAGE_36";
         this.getProducts();
       },
-      // immediate: true,
     },
     "$route.query.page": {
       handler(value) {
         this.page = parseInt(value) || 1;
         this.getProducts();
       },
-      // immediate: true,
     },
   },
 
   methods: {
+    handleRemoveBadge({ attrValue }) {
+      // Remove the filter from the URL query
+      const query = { ...this.$route.query };
+      for (const key in query) {
+        if (query[key].includes(attrValue)) {
+          const values = query[key]
+            .split("$")
+            .filter((val) => val !== attrValue);
+          if (values.length) {
+            query[key] = values.join("$");
+          } else {
+            delete query[key];
+          }
+        }
+      }
+      this.$router.push({ query });
+      this.parseFacetFromQuery(query);
+      this.getProducts();
+    },
     parseFacetFromQuery(query) {
-      console.log("parseFacet from query is called...");
       this.facet = [];
       for (const [key, value] of Object.entries(query)) {
         if (key !== "sortBy" && key !== "parPage" && key !== "page") {
@@ -130,16 +161,35 @@ export default {
         }
       }
     },
+    parseBadgeFromQuery(query) {
+      this.filterBadge = [];
+      for (const [key, value] of Object.entries(query)) {
+        if (key !== "sortBy" && key !== "parPage" && key !== "page") {
+          const values = value.split("$");
+          values.forEach((val) => {
+            const filter = this.filtersBlock.find((fb) => fb.attrCode === key);
+            if (filter) {
+              const facet = filter.facets.find((f) => f.attrValue === val);
+              if (facet) {
+                const badge = {
+                  attrCode: key,
+                  attrValue: val,
+                  attrLabel: facet.attrLabel,
+                };
+                this.filterBadge.push(badge);
+              }
+            }
+          });
+        }
+      }
+    },
     handleFilterChange(filter) {
       const { attrCode, attrValue, isChecked } = filter;
       const query = { ...this.$route.query };
-      // console.log(query);
-      // console.log(query[attrCode]);
       if (isChecked) {
         // Add new value to the existing ones, or create a new entry if it doesn't exist
         if (query[attrCode]) {
           const values = query[attrCode].split("$");
-          console.log(values);
           if (!values.includes(attrValue)) {
             values.push(attrValue);
             query[attrCode] = values.join("$");
@@ -162,12 +212,11 @@ export default {
       }
 
       this.$router.push({ query });
-      // Update the facet array
       this.parseFacetFromQuery(query);
     },
     async getProducts() {
+      this.loading = true;
       try {
-        console.log("Get product is calling...");
         const response = await this.$apollo.query({
           query: GET_PRODUCTS,
           variables: {
@@ -185,8 +234,11 @@ export default {
         this.products = response.data.listing.listingCategory.items;
         this.filtersBlock = response.data.listing.listingCategory.filtersBlock;
         this.totalPages = response.data.listing.listingCategory.pages;
+        this.parseBadgeFromQuery(this.$route.query);
       } catch (error) {
         console.error(`Error while fetching products: ${error}`);
+      } finally {
+        this.loading = false;
       }
     },
     updateQuery(params) {
