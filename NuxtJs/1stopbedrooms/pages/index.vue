@@ -95,30 +95,30 @@ export default {
     },
     "$route.query.sortBy": {
       handler(value) {
-        console.log(value);
         this.sortBy = value || "RELEVANCE";
         this.getProducts();
       },
-      immediate: true,
+      // immediate: true,
     },
     "$route.query.parPage": {
       handler(value) {
         this.parPage = value || "PER_PAGE_36";
         this.getProducts();
       },
-      immediate: true,
+      // immediate: true,
     },
     "$route.query.page": {
       handler(value) {
         this.page = parseInt(value) || 1;
         this.getProducts();
       },
-      immediate: true,
+      // immediate: true,
     },
   },
 
   methods: {
     parseFacetFromQuery(query) {
+      console.log("parseFacet from query is called...");
       this.facet = [];
       for (const [key, value] of Object.entries(query)) {
         if (key !== "sortBy" && key !== "parPage" && key !== "page") {
@@ -167,6 +167,7 @@ export default {
     },
     async getProducts() {
       try {
+        console.log("Get product is calling...");
         const response = await this.$apollo.query({
           query: GET_PRODUCTS,
           variables: {
