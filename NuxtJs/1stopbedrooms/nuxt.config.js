@@ -1,6 +1,3 @@
-import { setContext } from "apollo-link-context";
-import { HttpLink } from "apollo-link-http";
-
 export default {
   head: {
     title: "1stopbedrooms",
@@ -25,16 +22,29 @@ export default {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Poppins&display=swap",
       },
+      {
+        rel: "stylesheet",
+        href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css",
+        integrity:
+          "sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==",
+        crossorigin: "anonymous",
+        referrerpolicy: "no-referrer",
+      },
     ],
   },
-
   css: ["@assets/css/main.css"],
 
   plugins: [],
-
   components: true,
-
-  buildModules: [],
+  buildModules: ["@nuxtjs/fontawesome"],
+  fontawesome: {
+    component: "Fa",
+    suffix: false,
+    icons: {
+      solid: true,
+      brands: true,
+    },
+  },
 
   modules: ["@nuxtjs/apollo"],
 

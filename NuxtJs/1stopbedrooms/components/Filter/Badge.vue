@@ -1,14 +1,13 @@
-<!-- components/Badge.vue -->
 <template>
   <div class="badge">
     <span>{{ Filter.attrLabel }}</span>
-    <button @click="removeFilter(Filter.attrValue, $event)" class="close-btn">
-      X
-    </button>
+    <button @click="removeBadge" class="close-btn">X</button>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Badge",
   props: {
@@ -17,9 +16,17 @@ export default {
       required: true,
     },
   },
+
   methods: {
-    removeFilter(attrValue) {
-      this.$emit("removeFilter", { attrValue });
+    ...mapActions(["handleRemoveBadge"]),
+    removeBadge() {
+      const { attrCode, attrValue } = this.Filter;
+      this.handleRemoveBadge({
+        attrCode,
+        attrValue,
+        route: this.$route,
+        router: this.$router,
+      });
     },
   },
 };
@@ -31,9 +38,10 @@ export default {
   align-items: center;
   background-color: #efefef;
   color: black;
-  padding: 5px 10px;
-  border-radius: 12px;
-  margin: 5px;
+  padding: 8px 10px;
+  border-radius: 15px;
+  margin: 5px 10px 5px 0px;
+  box-sizing: border-box;
 }
 .close-btn {
   background: none;

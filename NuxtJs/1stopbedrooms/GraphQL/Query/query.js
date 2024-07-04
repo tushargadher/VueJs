@@ -56,7 +56,11 @@ export const GET_PRODUCTS = gql`
           labels
           slug
           url
+          delivery {
+            method
+          }
           shippingType
+
           tags {
             primaryDealTag
             primaryDealTagVisibility

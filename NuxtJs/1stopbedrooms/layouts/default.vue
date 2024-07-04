@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Department />
+    <coreNavbar />
+    <Nuxt />
   </div>
 </template>
 

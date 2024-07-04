@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Department />
+    <img src="../../static/logo-white.svg" alt="1stopbadroom" />
   </div>
 </template>
 

@@ -8,8 +8,8 @@
       >
         <a @click="changePage(page)">{{ page }}</a>
       </li>
-      <li v-if="currentPage < totalPages - 7">...</li>
-      <li v-if="currentPage < totalPages - 6" @click="changePage(totalPages)">
+      <li v-show="currentPage < totalPages - 7">...</li>
+      <li v-show="currentPage < totalPages - 6" @click="changePage(totalPages)">
         {{ totalPages }}
       </li>
     </ul>
@@ -17,22 +17,27 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
-  props: {
-    totalPages: {
-      type: Number,
-      required: true,
-    },
-    currentPage: {
-      type: Number,
-      required: true,
-    },
-  },
+  // props: {
+  //   totalPages: {
+  //     type: Number,
+  //     required: true,
+  //   },
+  //   currentPage: {
+  //     type: Number,
+  //     required: true,
+  //   },
+  // },
   computed: {
+    ...mapState(["totalPages", "page"]),
+    currentPage() {
+      return this.page;
+    },
     pages() {
       let start = Math.max(this.currentPage - 3, 1);
       let end = Math.min(this.currentPage + 3, this.totalPages);
-
       if (end - start < 6) {
         if (start === 1) {
           end = Math.min(start + 6, this.totalPages);
@@ -49,14 +54,15 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["updatePage"]),
     changePage(page) {
-      this.$router.push({ query: { ...this.$route.query, page } });
+      this.updatePage({ page, router: this.$router });
       this.scrollToTop();
     },
     scrollToTop() {
       window.scrollTo({
         top: 0,
-        behavior: "smooth", // for smooth scrolling
+        behavior: "smooth",
       });
     },
   },
