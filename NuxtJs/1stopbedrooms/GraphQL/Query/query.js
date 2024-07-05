@@ -1,4 +1,8 @@
 import gql from "graphql-tag";
+import {
+  LISTING_DETAILS_FRAGMENT,
+  LISTING_FILTERS_FRAGEMENT,
+} from "../Fragments/ListingFragments.js";
 export const GET_PRODUCTS = gql`
   query getInitialListingData(
     $slug: String!
@@ -6,93 +10,11 @@ export const GET_PRODUCTS = gql`
   ) {
     listing {
       listingCategory(slug: $slug, request: $request) {
-        itemsCount
-        perPage
-        pages
-        page
-        minPrice
-        maxPrice
-        title
-        items {
-          id
-          webId
-          brand {
-            id
-            name
-          }
-          collection
-          name
-          reviews {
-            number
-            rating
-            votes {
-              voteCount
-              voteName
-              votePercent
-            }
-          }
-          images {
-            hoverImage(style: "string") {
-              style
-              alt
-              src
-              sources {
-                media
-                srcset
-              }
-              classes
-            }
-            mainImage(style: "string") {
-              style
-              alt
-              src
-              sources {
-                media
-                srcset
-              }
-              classes
-            }
-          }
-          labels
-          slug
-          url
-          delivery {
-            method
-          }
-          shippingType
-
-          tags {
-            primaryDealTag
-            primaryDealTagVisibility
-            secondaryTag
-            secondaryTagVisibility
-            tertiaryTag
-            tertiaryTagVisibility
-          }
-          price {
-            price
-            regularPrice
-            finalPrice
-            msrp
-            showMsrp
-            discount
-            getExcludePromo
-            getSale
-          }
-        }
-        filtersBlock {
-          title
-          attrCode
-          facets {
-            itemCount
-            attrLabel
-            attrValue
-            child {
-              attrValue
-            }
-          }
-        }
+        ...ListingDetails
+        ...ListingFilters
       }
     }
   }
+  ${LISTING_DETAILS_FRAGMENT}
+  ${LISTING_FILTERS_FRAGEMENT}
 `;

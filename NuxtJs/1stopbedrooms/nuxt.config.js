@@ -34,7 +34,7 @@ export default {
   },
   css: ["@assets/css/main.css"],
 
-  plugins: [],
+  plugins: ["~/plugins/apollo-client.js"],
   components: true,
   buildModules: ["@nuxtjs/fontawesome"],
   fontawesome: {

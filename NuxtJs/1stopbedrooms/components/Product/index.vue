@@ -10,7 +10,11 @@
       :hoverImage="product?.images?.hoverImage"
     />
     <div class="product-info">
-      <ProductLink :url="product.url" />
+      <DynamicDetails
+        :details="product?.dynamicAttribute"
+        v-if="product.dynamicAttribute"
+      />
+      <ProductLink :url="product.url" v-if="!product.dynamicAttribute" />
       <ProductName
         :name="product?.name"
         :webId="product?.webId"
@@ -37,11 +41,13 @@
 <script>
 import DiscountTag from "./Tags/DiscountTag.vue";
 import Salestag from "./Tags/SaleTag.vue";
+import DynamicDetails from "./Details/DynamicDetails.vue";
 export default {
   name: "ProductCard",
   components: {
     DiscountTag,
     Salestag,
+    DynamicDetails,
   },
   props: {
     product: {
