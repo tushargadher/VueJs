@@ -23,6 +23,7 @@
         :onSale="!!product?.price?.getSale"
         :getExcludePromo="product?.price?.getExcludePromo"
       />
+      <Salestag v-show="product?.price?.getSale" />
       <ProductRating
         :rating="product?.reviews?.rating"
         :numberOfReviews="product?.reviews?.number"
@@ -35,10 +36,12 @@
 
 <script>
 import DiscountTag from "./Tags/DiscountTag.vue";
+import Salestag from "./Tags/SaleTag.vue";
 export default {
   name: "ProductCard",
   components: {
     DiscountTag,
+    Salestag,
   },
   props: {
     product: {

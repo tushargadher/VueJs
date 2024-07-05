@@ -9,7 +9,10 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@nuxtjs/apollo": "^4.0.1-rc.5",
+    "@nuxtjs/fontawesome": "^1.1.2",
     "core-js": "^3.25.3",
     "graphql-tag": "^2.12.6",
     "nuxt": "^2.15.8",

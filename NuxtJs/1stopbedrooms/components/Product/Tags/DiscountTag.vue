@@ -2,7 +2,7 @@
   <div class="discount-tag">
     <img
       class="icon"
-      src="../../../static/DiscountSVG.svg"
+      src="@/static/DiscountSVG.svg"
       alt="Discount Icon"
     />
     <span>{{ text }}</span>
@@ -23,11 +23,11 @@ export default {
 
 <style scoped>
 .discount-tag {
+  background-color: #e0e7ff;
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e0e7ff;
-  color: #000;
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 0.8rem;
