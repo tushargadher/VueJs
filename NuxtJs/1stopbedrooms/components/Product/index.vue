@@ -8,6 +8,7 @@
     <ProductImage
       :mainImage="product?.images?.mainImage"
       :hoverImage="product?.images?.hoverImage"
+      :slug="product?.slug"
     />
     <div class="product-info">
       <DynamicDetails

@@ -46,6 +46,15 @@ export default {
     },
   },
 
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: "products",
+        path: "/:category+",
+        component: resolve(__dirname, "pages/index.vue"),
+      });
+    },
+  },
   modules: ["@nuxtjs/apollo"],
 
   apollo: {

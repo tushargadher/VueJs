@@ -1,5 +1,5 @@
 <template>
-  <div class="product-images">
+  <div class="product-images" @click="handleClick">
     <img :src="mainImage?.src" :alt="mainImage?.alt" class="main-image" />
     <img :src="hoverImage?.src" :alt="hoverImage?.alt" class="hover-image" />
   </div>
@@ -14,6 +14,15 @@ export default {
     },
     hoverImage: {
       type: Object,
+    },
+    slug: {
+      type: String,
+      require: true,
+    },
+  },
+  methods: {
+    handleClick() {
+      alert(`${this.slug}`);
     },
   },
 };
