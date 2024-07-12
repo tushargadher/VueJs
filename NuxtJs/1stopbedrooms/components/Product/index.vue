@@ -6,9 +6,9 @@
     />
 
     <ProductImage
-      :mainImage="product?.images?.mainImage"
-      :hoverImage="product?.images?.hoverImage"
-      :slug="product?.slug"
+      :src="product?.images?.mainImage?.src"
+      :hoverImage="product?.images?.hoverImage?.src"
+      @clicked="handleClick"
     />
     <div class="product-info">
       <DynamicDetails
@@ -56,6 +56,11 @@ export default {
       required: true,
     },
   },
+  methods: {
+    handleClick() {
+      this.$router.push({ path: `${this.product?.slug}` });
+    },
+  },
   computed: {
     shouldShowDiscountTag() {
       return (
@@ -68,7 +73,7 @@ export default {
 
 <style scoped>
 .product-card {
-  width: 31%;
+  width: 32.5%;
   box-sizing: border-box;
   background-color: #fff;
   margin-bottom: 10px;

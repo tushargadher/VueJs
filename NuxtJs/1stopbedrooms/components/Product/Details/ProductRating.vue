@@ -7,7 +7,7 @@
       :class="{ filled: n <= calculateRating(rating) }"
       >★</span
     >
-    <p>({{ numberOfReviews }})</p>
+    <!-- <p>({{ numberOfReviews }})</p> -->
   </div>
 </template>
 

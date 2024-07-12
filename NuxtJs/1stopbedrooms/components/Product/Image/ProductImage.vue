@@ -1,28 +1,24 @@
 <template>
   <div class="product-images" @click="handleClick">
-    <img :src="mainImage?.src" :alt="mainImage?.alt" class="main-image" />
-    <img :src="hoverImage?.src" :alt="hoverImage?.alt" class="hover-image" />
+    <img :src="src" :alt="src" class="main-image" />
+    <img :src="hoverImage" :alt="hoverImage" class="hover-image" />
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    mainImage: {
-      type: Object,
-      require: true,
+    src: {
+      type: [Object, String],
+      required: true,
     },
     hoverImage: {
-      type: Object,
-    },
-    slug: {
-      type: String,
-      require: true,
+      type: [Object, String],
     },
   },
   methods: {
     handleClick() {
-      alert(`${this.slug}`);
+      this.$emit("clicked");
     },
   },
 };

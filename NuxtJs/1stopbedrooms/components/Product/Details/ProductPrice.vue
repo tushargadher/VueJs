@@ -20,11 +20,11 @@ export default {
     },
     onSale: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
     getExcludePromo: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
   },
   computed: {

@@ -1,8 +1,12 @@
 <template>
-  <div class="container">
-    {{ slug }}
-    <FilterContainer />
-    <ListingContainer />
+  <div>
+    <div v-if="slug" class="container">
+      <FilterContainer />
+      <ListingContainer />
+    </div>
+    <div v-else>
+      <Home />
+    </div>
   </div>
 </template>
 
@@ -14,7 +18,7 @@ export default {
   computed: {
     ...mapState(["facet", "page", "sortBy", "parPage", "loading"]),
     slug() {
-      return this.$route.path;
+      return this.$route.path === "/" ? "" : this.$route.path;
     },
   },
   created() {
@@ -26,31 +30,41 @@ export default {
     "$route.query.sortBy": {
       handler(value) {
         this.updateSortBy(value || "RELEVANCE");
-        this.getProducts(this.slug);
+        if (this.slug) {
+          this.getProducts(this.slug);
+        }
       },
     },
     "$route.query.parPage": {
       handler(value) {
         this.updateParPage(value || "PER_PAGE_36");
-        this.getProducts(this.slug);
+        if (this.slug) {
+          this.getProducts(this.slug);
+        }
       },
     },
     "$route.query.page": {
       handler(value) {
         this.updatePage(parseInt(value) || 1);
-        this.getProducts(this.slug);
+        if (this.slug) {
+          this.getProducts(this.slug);
+        }
       },
     },
     facet: {
       handler() {
-        this.getProducts(this.slug);
+        if (this.slug) {
+          this.getProducts(this.slug);
+        }
       },
       deep: true,
     },
   },
   methods: {
     async initializePage(query) {
-      await this.getProducts(this.slug);
+      if (this.slug) {
+        await this.getProducts(this.slug);
+      }
       this.parseFacetFromQuery(query);
       this.parseBadgeFromQuery(query);
     },
@@ -64,26 +78,32 @@ export default {
       "initializeStateFromRoute",
     ]),
     updateSortBy(value) {
-      this.$store.dispatch("updateSortBy", {
-        sortBy: value,
-        route: this.$route,
-        router: this.$router,
-      });
+      if (this.slug) {
+        this.$store.dispatch("updateSortBy", {
+          sortBy: value,
+          route: this.$route,
+          router: this.$router,
+        });
+      }
     },
     updateParPage(value) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      this.$store.dispatch("updateParPage", {
-        parPage: value,
-        route: this.$route,
-        router: this.$router,
-      });
+      if (this.slug) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.$store.dispatch("updateParPage", {
+          parPage: value,
+          route: this.$route,
+          router: this.$router,
+        });
+      }
     },
     updatePage(value) {
-      this.$store.dispatch("updatePage", {
-        page: value,
-        route: this.$route,
-        router: this.$router,
-      });
+      if (this.slug) {
+        this.$store.dispatch("updatePage", {
+          page: value,
+          route: this.$route,
+          router: this.$router,
+        });
+      }
     },
   },
 };

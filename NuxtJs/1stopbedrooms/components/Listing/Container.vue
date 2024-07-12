@@ -23,7 +23,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   min-height: 100vh;
 }
 </style>
