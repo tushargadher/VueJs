@@ -1,41 +1,55 @@
 <template>
-  <div class="image-slider">
-    <div class="main-image-container">
-      <img :src="mainImages[currentIndex]?.src" class="main-image" />
-    </div>
-    <div class="image-slider-container">
-      <i class="fa-solid fa-chevron-left" @click="handlePrev"></i>
-      <div class="thumbnail-container">
+  <div class="image-container">
+    <div class="image-slider">
+      <div class="main-image-container">
         <img
-          v-for="(thumbnail, index) in thumbnails"
-          :key="index"
-          :src="thumbnail.src"
-          class="thumbnail"
-          :class="{ active: index === currentIndex }"
-          @click="currentIndex = index"
-          ref="thumbnails"
+          :src="galleryData.productImages[currentIndex]?.src"
+          class="main-image"
         />
       </div>
-      <i class="fa-solid fa-angle-right" @click="handleNext"></i>
+      <div class="image-slider-container">
+        <i class="fa-solid fa-chevron-left" @click="handlePrev"></i>
+        <div class="thumbnail-container">
+          <img
+            v-for="(thumbnail, index) in thumbnails"
+            :key="index"
+            :src="thumbnail.src"
+            class="thumbnail"
+            :class="{ active: index === currentIndex }"
+            @click="currentIndex = index"
+            ref="thumbnails"
+          />
+        </div>
+        <i class="fa-solid fa-angle-right" @click="handleNext"></i>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
-  props: {
-    mainImages: {
-      type: [Array, Object],
-      required: true,
-    },
-    thumbnails: {
-      type: [Array, Object],
-      required: true,
-    },
-  },
+  // props: {
+  //   mainImages: {
+  //     type: [Array, Object],
+  //     required: true,
+  //   },
+  //   thumbnails: {
+  //     type: [Array, Object],
+  //     required: true,
+  //   },
+  // },
   data() {
     return {
       currentIndex: 0,
     };
+  },
+  computed: {
+    thumbnails() {
+      return this.galleryData.productThumbImages;
+    },
+    ...mapState({
+      galleryData: (state) => state.productStore.galleryData,
+    }),
   },
   watch: {
     currentIndex() {
@@ -63,6 +77,10 @@ export default {
 };
 </script>
 <style scoped>
+.image-container {
+  width: 45%;
+  /* border: 1px solid black; */
+}
 .image-slider {
   width: 100%;
   display: flex;

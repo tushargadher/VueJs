@@ -424,3 +424,84 @@ export const GET_PRODUCT_GROUPING_DATA = gql`
     priceValidUntil
   }
 `;
+
+export const GET_REVIEW_DATA = gql`
+  query getReviewData(
+    $slug: String!
+    $pageId: Int
+    $sortMode: ProductReviewSortModeEnum
+    $rating: [Int]
+    $searchRequest: String
+  ) {
+    products {
+      productBySlug(slug: $slug) {
+        review {
+          # first
+          images {
+            ...fragmentProductImage
+          }
+          #second
+          rating {
+            number
+            rating
+            votes {
+              voteName
+              voteCount
+              votePercent
+            }
+          }
+
+          #third
+          items(
+            pageId: $pageId
+            sortMode: $sortMode
+            rating: $rating
+            searchRequest: $searchRequest
+            isJsonLD: false
+          ) {
+            totalQty
+            items {
+              ...fragmentReviewItem
+            }
+          }
+        }
+      }
+    }
+  }
+  fragment fragmentProductImage on ProductImageType {
+    style
+    alt
+    src
+    classes
+    __typename
+    sources {
+      media
+      srcset
+      __typename
+    }
+  }
+  fragment fragmentReviewItem on ProductReviewItem {
+    id
+    author {
+      name
+    }
+    address {
+      city
+      regionCode
+    }
+    product {
+      name
+      url
+      slug
+    }
+    text
+    date
+    summary
+    rating
+    isVerifiedPurchase
+    helpfulCount
+    images {
+      ...fragmentProductImage
+    }
+  }
+`;

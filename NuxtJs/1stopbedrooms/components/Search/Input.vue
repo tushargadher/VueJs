@@ -1,17 +1,22 @@
 <template>
-  <div class="input-container">
+  <div class="input-container" :style="{ width: inputWidth }">
     <input
       type="text"
       class="input"
       :placeholder="placeholder"
       :value="value"
-      :style="{ width: inputWidth }"
       @input="handleInput"
     />
-
-    <i class="fa-solid fa-magnifying-glass magnifier" v-show="!value"></i>
-
-    <span v-show="value" class="icon close" @click="clearInput">&#10006;</span>
+    <i
+      class="fa-solid fa-magnifying-glass magnifier"
+      @click="handleSearchClick"
+    ></i>
+    <span
+      v-show="showClearButton && value"
+      class="icon close"
+      @click="clearInput"
+      >&#10006;</span
+    >
   </div>
 </template>
 
@@ -30,6 +35,10 @@ export default {
       type: String,
       default: "100%",
     },
+    showClearButton: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     inputWidth() {
@@ -39,6 +48,9 @@ export default {
   methods: {
     handleInput(e) {
       this.$emit("input", e.target.value);
+    },
+    handleSearchClick() {
+      this.$emit("clicked", this.value);
     },
     clearInput() {
       this.$emit("input", "");
@@ -51,7 +63,7 @@ export default {
 .input-container {
   position: relative;
   display: inline-block;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .input {
@@ -83,6 +95,9 @@ export default {
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
+}
+.magnifier:hover {
+  cursor: pointer;
 }
 
 .close {
