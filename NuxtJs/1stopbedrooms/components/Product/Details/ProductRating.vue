@@ -7,7 +7,7 @@
       :class="{ filled: n <= calculateRating(rating) }"
       >★</span
     >
-    <p>({{ numberOfReviews }})</p>
+    <p v-show="showNUmberofReviews">({{ numberOfReviews }})</p>
   </div>
 </template>
 
@@ -22,6 +22,10 @@ export default {
     numberOfReviews: {
       type: Number,
       required: true,
+    },
+    showNUmberofReviews: {
+      type: Boolean,
+      default: true,
     },
   },
   methods: {

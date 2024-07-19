@@ -3,6 +3,7 @@
     <ProductRating
       :rating="review.rating.rating * 100"
       :numberOfReviews="review.rating.number"
+      :showNUmberofReviews="false"
     />
     <p>{{ review.rating.number }} reviews</p>
     |
@@ -34,5 +35,6 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 60%;
+  margin: 5px 0;
 }
 </style>

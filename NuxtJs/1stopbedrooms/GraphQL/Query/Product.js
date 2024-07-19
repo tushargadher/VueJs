@@ -200,72 +200,6 @@ export const GET_PRODUCT_GALLERY_DATA = gql`
 `;
 
 export const GET_PRODUCT_GROUPING_DATA = gql`
-  query getProductGroupingData($slug: String!) {
-    products {
-      productBySlug(slug: $slug) {
-        grouping {
-          # first
-          attributes {
-            id
-            code
-            name
-            viewType
-            values {
-              id
-              name
-              image {
-                ...fragmentProductImage
-                __typename
-              }
-              imageRaw {
-                ...fragmentProductImage
-                __typename
-              }
-            }
-          }
-          # second
-          items {
-            firstAttribute
-            secondAttribute
-            isDefault
-            product {
-              ...fragementProductDetails
-            }
-          }
-
-          # third
-          foundation {
-            attributes {
-              id
-              code
-              name
-              viewType
-              values {
-                id
-                name
-                image {
-                  ...fragmentProductImage
-                  __typename
-                }
-                imageRaw {
-                  ...fragmentProductImage
-                  __typename
-                }
-              }
-            }
-            items {
-              firstAttribute
-              secondAttribute
-              isDefault
-              product {
-                ...fragementProductDetails
-              }
-            }
-          }
-        }
-      }
-    }
-  }
   fragment fragmentProductImage on ProductImageType {
     style
     alt
@@ -278,150 +212,121 @@ export const GET_PRODUCT_GROUPING_DATA = gql`
     classes
     __typename
   }
-  fragment fragementProductDetails on GroupingProduct {
+
+  fragment fragmentGroupingAttribute on GroupingAttribute {
+    id
+    code
+    name
+    viewType
+    values {
+      id
+      name
+      image {
+        ...fragmentProductImage
+        __typename
+      }
+      imageRaw {
+        ...fragmentProductImage
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+
+  fragment fragmentGroupingProductData on GroupingProduct {
     general {
       id
-      webId
-      bedTypeId
-      mpn
-      sku
-      masterSku
       name
+      bedTypeId
       slug
-      url
       productType
       typeId
-      typeGroup
       labels
       image {
         ...fragmentProductImage
         __typename
       }
-      brand {
-        id
-        name
-        slug
-        image {
-          ...fragmentProductImage
-          __typename
-        }
-        isActive
-        url
-      }
-      collection {
-        id
-        name
-        slug
-      }
       price {
-        ...fragmentPrice
-      }
-      tags {
-        primary
-        primaryVisibility
-        secondary
-        secondaryVisibility
-        tertiary
-        tertiaryVisibility
-        banner
-        bannerVisibility
-      }
-      coupon {
-        discount
-        discountType
-        code
-        minPurchase
-      }
-    }
-    gallery {
-      productImages {
-        ...fragmentProductImage
+        price
+        regularPrice
+        finalPrice
+        selectionPrice
         __typename
       }
-      productThumbImages {
-        ...fragmentProductImage
-        __typename
-      }
-      youtubeLinks {
-        src
-      }
-      youtubeThumbLinks {
-        src
-      }
-      customerImages {
-        ...fragmentProductImage
-        __typename
-      }
-      customerThumbImages {
-        ...fragmentProductImage
-        __typename
-      }
-      solidButtonFlag
-      webId
-      mpn
+      __typename
     }
     additional {
-      showAffirm
-      showKatapult
       outOfStock
       selectionId
       optionId
-      mattressDesc {
-        comfortLevel
-        thickness
-        type
-        top
-      }
-      desc
-      showDesc
-      specs {
-        name
-        value
-        url
-        slug
-      }
-      weightAndDim
-      delivery {
-        type
-        method
-        date
-        isFreeShipping
-      }
-      canDisplayMattress
-      canDisplayMattressPopup
       buildYourOwnEnabled
-      visibility
-      shopMore {
-        key
-        title
-        url
-      }
-      dimensions {
-        height
-        width
-        weight
-        depth
-      }
-      gtin
-      isUseInGoogleFeed
+      __typename
     }
+    __typename
   }
-  fragment fragmentPrice on ProductPriceType {
-    price
-    regularPrice
-    finalPrice
-    msrp
-    relatedCustomPrice
-    totalDiscount
-    youSave
-    selectionPrice
-    discount
-    excludePromo
-    priceMatch
-    priceProtection
-    originalPrice
-    clearanceQty
-    priceValidUntil
+
+  fragment fragmentGroupingItem on GroupingItem {
+    firstAttribute
+    secondAttribute
+    isDefault
+    product {
+      ...fragmentGroupingProductData
+      __typename
+    }
+    __typename
+  }
+
+  fragment fragmentFoundation on FoundationType {
+    attributes {
+      ...fragmentGroupingAttribute
+      __typename
+    }
+    items {
+      ...fragmentGroupingItem
+      __typename
+    }
+    __typename
+  }
+
+  fragment fragmentProductGrouping on ProductGrouping {
+    attributes {
+      ...fragmentGroupingAttribute
+      __typename
+    }
+    items {
+      ...fragmentGroupingItem
+      __typename
+    }
+    foundation {
+      ...fragmentFoundation
+      __typename
+    }
+    __typename
+  }
+
+  query getProductGroupingData($slug: String!) {
+    products {
+      productBySlug(slug: $slug) {
+        grouping {
+          ...fragmentProductGrouping
+          __typename
+        }
+        ... on BundleProduct {
+          setSelection {
+            count
+            label
+            isDefault
+            isAdditional
+            __typename
+          }
+          pplanInclude
+          __typename
+        }
+        __typename
+      }
+      __typename
+    }
   }
 `;
 
@@ -503,5 +408,45 @@ export const GET_REVIEW_DATA = gql`
     images {
       ...fragmentProductImage
     }
+  }
+`;
+
+export const GET_PRODUCT_SHIPPING_AND_RELATEDSEARCH_DATA = gql`
+  query getProductShippingAndRelatedSearchData($slug: String!) {
+    products {
+      productBySlug(slug: $slug) {
+        shippingAndReturn {
+          ...shippingAndReturnFragment
+        }
+        relatedSearch {
+          ...relatedSearchFragment
+        }
+      }
+    }
+  }
+  fragment shippingAndReturnFragment on ShippingAndReturnType {
+    shipping {
+      title
+      subtitle
+    }
+    return {
+      title
+      subtitle
+      subtitleSlug
+      isMattress
+      url
+      merchantReturnDays
+    }
+    popupType
+    urlShippingDetails
+    transitTime {
+      minValue
+      maxValue
+    }
+  }
+  fragment relatedSearchFragment on RelatedSearchType {
+    link
+    title
+    internalRoute
   }
 `;

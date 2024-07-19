@@ -32,6 +32,7 @@ export default {
   align-items: baseline;
   /* border: 1px solid black; */
   width: fit-content;
+  margin: 5px 0;
 }
 .final-price {
   font-weight: bolder;

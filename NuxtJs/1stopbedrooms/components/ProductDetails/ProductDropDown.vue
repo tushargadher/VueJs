@@ -14,7 +14,7 @@
           </tr>
         </table>
       </div>
-      <a href="#">Read More</a>
+      <!-- <a href="#">Read More</a> -->
     </div>
   </div>
 </template>

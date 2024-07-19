@@ -28,16 +28,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 export default {
-  // props: {
-  //   mainImages: {
-  //     type: [Array, Object],
-  //     required: true,
-  //   },
-  //   thumbnails: {
-  //     type: [Array, Object],
-  //     required: true,
-  //   },
-  // },
+  
   data() {
     return {
       currentIndex: 0,

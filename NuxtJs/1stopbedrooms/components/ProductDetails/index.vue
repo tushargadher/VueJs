@@ -8,6 +8,7 @@
       :review="productData.review"
       :webId="productData.general.webId"
     />
+    <SaleTag v-show="productData.general.tags.primary" />
     <PriceInfo :price="productData.general.price" />
     <DeliveryInfo :delivery="productData.additional.delivery" />
     <DropDowns :additional="productData.additional" />
@@ -19,13 +20,16 @@ import ReviewInfo from "./ReviewInfo.vue";
 import PriceInfo from "./PriceInfo.vue";
 import DeliveryInfo from "./DeliveryInfo.vue";
 import DropDowns from "./DropDowns.vue";
+import SaleTag from "./../Product/Tags/SaleTag.vue";
 import { mapState, mapActions } from "vuex";
+
 export default {
   components: {
     ReviewInfo,
     PriceInfo,
     DeliveryInfo,
     DropDowns,
+    SaleTag,
   },
   computed: {
     ...mapState({

@@ -3,6 +3,7 @@ import {
   GET_PRODUCT_GROUPING_DATA,
   GET_PRODUCT_GENERAL_DATA,
   GET_REVIEW_DATA,
+  GET_PRODUCT_SHIPPING_AND_RELATEDSEARCH_DATA,
 } from "../GraphQL/Query/Product";
 
 const ReviewfilterOptions = [
@@ -19,6 +20,7 @@ const state = () => ({
   galleryData: [],
   groupingData: [],
   reviewData: [],
+  shippingData: [],
   error: null,
   loading: true,
   ReviewfilterOptions,
@@ -48,6 +50,9 @@ const mutations = {
   //append review data
   appendReviewData(state, newReviews) {
     state.reviewData.items.items.push(...newReviews);
+  },
+  setShippingData(state, data) {
+    state.shippingData = data;
   },
   setError(state, error) {
     state.error = error;
@@ -133,6 +138,23 @@ const actions = {
       }
     } catch (error) {
       console.error(`Error while fetching product review data:${error}`);
+      commit("setError", error.message);
+    }
+  },
+
+  async fetchShippingAndRelatedSearchData({ commit }, { slug }) {
+    try {
+      const apolloClient = this.app.apolloProvider.defaultClient;
+      const response = await apolloClient.query({
+        query: GET_PRODUCT_SHIPPING_AND_RELATEDSEARCH_DATA,
+        variables: { slug },
+      });
+      // console.log(response);
+      commit("setShippingData", response.data.products.productBySlug);
+    } catch (error) {
+      console.error(
+        `Error while fetching shipping and relatedsearch data ${error} `
+      );
       commit("setError", error.message);
     }
   },
